@@ -1,0 +1,91 @@
+CREATE TABLE Department (
+    dept_id INT PRIMARY KEY,
+    dept_name VARCHAR(50)
+);
+
+CREATE TABLE Employee (
+    emp_id INT PRIMARY KEY,
+    emp_name VARCHAR(50),
+    salary INT,
+    hire_date DATE,
+    dept_id INT
+);
+
+INSERT INTO Department VALUES
+(1,'HR'),
+(2,'IT'),
+(3,'Finance'),
+(4,'Sales');
+
+INSERT INTO Employee VALUES
+(101,'Amit',50000,'2026-01-10',1),
+(102,'Priya',70000,'2026-02-15',2),
+(103,'Rahul',65000,'2026-03-20',2),
+(104,'Sneha',80000,'2026-01-05',3),
+(105,'Karan',55000,'2026-04-01',4),
+(106,'Pooja',90000,'2026-02-10',2),
+(107,'Rohit',75000,'2026-05-12',3);
+
+SELECT *
+FROM Employee
+ORDER BY salary DESC
+LIMIT 5;
+
+SELECT d.dept_name,
+COUNT(e.emp_id) AS employee_count
+FROM Department d
+LEFT JOIN Employee e
+ON d.dept_id = e.dept_id
+GROUP BY d.dept_name;
+
+SELECT MAX(salary) AS Second_Highest_Salary
+FROM Employee
+WHERE salary < (SELECT MAX(salary) FROM Employee);
+
+SELECT *
+FROM Employee e
+WHERE salary >
+(
+SELECT AVG(salary)
+FROM Employee
+WHERE dept_id = e.dept_id
+);
+
+SELECT e.emp_name,
+d.dept_name
+FROM Employee e
+INNER JOIN Department d
+ON e.dept_id = d.dept_id;
+
+SELECT e.emp_name,
+d.dept_name
+FROM Employee e
+LEFT JOIN Department d
+ON e.dept_id = d.dept_id;
+
+SELECT dept_id,
+AVG(salary) AS avg_salary
+FROM Employee
+GROUP BY dept_id
+HAVING AVG(salary) > 60000;
+
+SELECT *
+FROM Employee
+WHERE hire_date >= DATE_SUB(CURDATE(), INTERVAL 6 MONTH);
+
+INSERT INTO Employee VALUES
+(108,'Amit',50000,'2026-06-01',1);
+
+SELECT emp_name,
+COUNT(*) AS total_records
+FROM Employee
+GROUP BY emp_name
+HAVING COUNT(*) > 1;
+
+DELETE e1
+FROM Employee e1
+INNER JOIN Employee e2
+ON e1.emp_name = e2.emp_name
+AND e1.emp_id > e2.emp_id;
+
+SELECT * FROM Employee;
