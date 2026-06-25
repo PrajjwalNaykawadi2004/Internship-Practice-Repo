@@ -1,0 +1,96 @@
+INSERT INTO Employee VALUES
+(108,'Akash',85000,'2026-06-10',2),
+(109,'Neha',60000,'2026-06-15',1);
+
+SELECT emp_id,
+       emp_name,
+       salary,
+       RANK() OVER(ORDER BY salary DESC) AS Salary_Rank
+FROM Employee;
+
+SELECT emp_id,
+       emp_name,
+       salary,
+       ROW_NUMBER() OVER(ORDER BY salary DESC) AS Row_No
+FROM Employee;
+
+SELECT emp_id,
+       emp_name,
+       salary,
+       DENSE_RANK() OVER(ORDER BY salary DESC) AS Dense_Rank_No
+FROM Employee;
+
+SELECT emp_id,
+       emp_name,
+       salary,
+       NTILE(4) OVER(ORDER BY salary DESC) AS Group_No
+FROM Employee;
+
+SELECT emp_id,
+       emp_name,
+       salary,
+       LAG(salary) OVER(ORDER BY salary DESC) AS Previous_Salary
+FROM Employee;
+
+SELECT emp_id,
+       emp_name,
+       salary,
+       LEAD(salary) OVER(ORDER BY salary DESC) AS Next_Salary
+FROM Employee;
+
+SELECT emp_id,
+       emp_name,
+       salary,
+       FIRST_VALUE(salary) OVER(ORDER BY salary DESC) AS Highest_Salary
+FROM Employee;
+
+
+SELECT emp_id,
+       emp_name,
+       salary,
+       LAST_VALUE(salary) OVER(
+           ORDER BY salary DESC
+           ROWS BETWEEN UNBOUNDED PRECEDING
+           AND UNBOUNDED FOLLOWING
+       ) AS Lowest_Salary
+FROM Employee;
+
+SELECT emp_id,
+       emp_name,
+       dept_id,
+       salary,
+       AVG(salary) OVER(PARTITION BY dept_id) AS Dept_Avg_Salary
+FROM Employee;
+
+CREATE VIEW Employee_View AS
+SELECT emp_name, salary
+FROM Employee;
+
+SELECT * FROM Employee_View;
+
+CREATE TABLE Employee_Log(
+    log_id INT AUTO_INCREMENT PRIMARY KEY,
+    emp_id INT,
+    action_time TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
+
+CREATE TRIGGER emp_insert
+AFTER INSERT ON Employee
+FOR EACH ROW
+INSERT INTO Employee_Log(emp_id)
+VALUES(NEW.emp_id);
+
+INSERT INTO Employee VALUES
+(110,'Riya',65000,'2026-06-20',3);
+
+
+SELECT * FROM Employee_Log;
+
+SELECT emp_name,
+       salary,
+       CASE
+           WHEN salary >= 80000 THEN 'High Salary'
+           WHEN salary >= 60000 THEN 'Medium Salary'
+           ELSE 'Low Salary'
+       END AS Salary_Category
+FROM Employee;
