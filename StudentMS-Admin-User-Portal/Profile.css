@@ -1,0 +1,235 @@
+/* ==========================
+   PROFILE CARD
+========================== */
+
+.profile-card{
+    width:900px;
+    max-width:95%;
+    margin:35px auto;
+    background:#ffffff;
+    border-radius:18px;
+    box-shadow:0 10px 35px rgba(0,0,0,.08);
+    overflow:hidden;
+}
+
+
+/* ==========================
+   PROFILE HEADER
+========================== */
+
+.profile-header{
+    display:flex;
+    align-items:center;
+    gap:35px;
+    padding:35px;
+    border-bottom:1px solid #ececec;
+    background:#fafcff;
+}
+
+.profile-avatar{
+    display:flex;
+    flex-direction:column;
+    align-items:center;
+    gap:10px;
+}
+
+.profile-avatar img{
+    width:140px;
+    height:140px;
+    border-radius:50%;
+    object-fit:cover;
+    border:5px solid #22c55e;
+    background:#f5f5f5;
+    box-shadow:0 8px 18px rgba(0,0,0,.15);
+}
+
+.profile-info{
+    flex:1;
+}
+
+.profile-info h2{
+    margin:0;
+    font-size:42px;
+    color:#1e293b;
+    font-weight:700;
+}
+
+.profile-info p{
+    margin-top:8px;
+    color:#64748b;
+    font-size:16px;
+}
+
+
+/* ==========================
+   UPLOAD SECTION
+========================== */
+
+.upload-section{
+    display:flex;
+    align-items:center;
+    gap:12px;
+    margin-top:22px;
+}
+
+.choose-btn{
+    background:#2563eb;
+    color:white;
+    border:none;
+    padding:11px 20px;
+    border-radius:8px;
+    cursor:pointer;
+    font-weight:600;
+    display:inline-block;
+    transition:.3s;
+}
+
+.choose-btn:hover{
+    background:#1d4ed8;
+    transform:translateY(-2px);
+}
+
+.update-profile-btn{
+    background:#2563eb;
+    color:white;
+    border:none;
+    padding:11px 20px;
+    border-radius:8px;
+    cursor:pointer;
+    font-weight:600;
+    transition:.3s;
+}
+
+.update-profile-btn:hover{
+    background:#1d4ed8;
+}
+
+/* ==========================
+   PROFILE INFORMATION
+========================== */
+
+.section-title{
+    padding:25px 35px 15px;
+    font-size:28px;
+    font-weight:700;
+    color:#1e293b;
+}
+
+.profile-table{
+    width:92%;
+    margin:0 auto;
+    border-collapse:separate;
+    border-spacing:0 14px;
+}
+
+.profile-table th{
+    width:30%;
+    background:#eef4ff;
+    color:#334155;
+    padding:18px 22px;
+    text-align:left;
+    font-size:16px;
+    font-weight:700;
+    border-radius:12px 0 0 12px;
+}
+
+.profile-table td{
+    background:#ffffff;
+    color:#111827;
+    padding:18px 22px;
+    font-size:16px;
+    font-weight:600;
+    border:1px solid #e5e7eb;
+    border-left:none;
+    border-radius:0 12px 12px 0;
+}
+
+.profile-table tr:hover th{
+    background:#dbeafe;
+}
+
+.profile-table tr:hover td{
+    background:#f8fbff;
+}
+
+
+/* Bottom Button */
+
+.profile-card>.update-profile-btn{
+    margin:30px 35px;
+    width:200px;
+    height:48px;
+    font-size:15px;
+    border-radius:10px;
+}
+
+/* ==========================
+   FINAL POLISH
+========================== */
+
+.profile-table th{
+    box-shadow:0 2px 8px rgba(0,0,0,.05);
+}
+
+.profile-table td{
+    box-shadow:0 2px 8px rgba(0,0,0,.03);
+}
+
+.choose-btn,
+.update-profile-btn{
+    transition:.3s;
+}
+
+.choose-btn:hover{
+    transform:translateY(-2px);
+}
+
+.update-profile-btn:hover{
+    transform:translateY(-2px);
+}
+
+.profile-header{
+    align-items:center;
+}
+
+.profile-info{
+    flex:1;
+}
+
+.profile-info h2{
+    margin-bottom:8px;
+}
+
+.profile-info p{
+    margin-bottom:20px;
+}
+
+.profile-card{
+    overflow:hidden;
+}
+
+.profile-table td:empty::before{
+    content:"Not Available";
+    color:#9ca3af;
+    font-style:italic;
+}
+
+.profile-avatar img[src=""],
+.profile-avatar img:not([src]){
+    content:url("images/default-user.png");
+}
+
+.photo-title{
+    margin-top:10px;
+    font-size:16px;
+    font-weight:600;
+    color:#374151;
+    text-align:center;
+}
+
+.photo-text{
+    margin-top: 12px;
+    font-size: 16px;
+    color: #374151;
+    font-weight: 600;
+}

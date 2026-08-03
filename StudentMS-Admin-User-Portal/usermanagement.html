@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>User Management</title>
+
+    <link rel="stylesheet" href="AdminDashboard.css">
+
+    <link rel="stylesheet"
+          href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+</head>
+
+<body>
+
+<div class="sidebar">
+
+    <div class="logo">
+        <i class="fa-solid fa-graduation-cap"></i>
+        <span>StudentMS</span>
+    </div>
+
+    <ul>
+
+        <li>
+            <a href="AdminDashboard.html">
+                <i class="fa-solid fa-house"></i>
+                Dashboard
+            </a>
+        </li>
+
+        <li>
+            <a href="Register.html">
+                <i class="fa-solid fa-user-plus"></i>
+                Add Student
+            </a>
+        </li>
+
+        <li>
+            <a href="Students.html">
+                <i class="fa-solid fa-users"></i>
+                Students
+            </a>
+        </li>
+
+        <li class="active">
+            <a href="usermanagement.html">
+                <i class="fa-solid fa-user-gear"></i>
+                User Management
+            </a>
+        </li>
+
+    </ul>
+
+</div>
+
+<div class="main">
+
+    <div class="topbar">
+
+        <h2>User Management</h2>
+
+        <div class="right">
+
+            <input type="text"
+                   id="searchUser"
+                   placeholder="Search Username...">
+
+            <select id="statusFilter">
+
+                <option value="">All</option>
+
+                <option value="Active">Active</option>
+
+                <option value="Inactive">Inactive</option>
+
+            </select>
+
+            <button class="filter-btn" onclick="filterUsers()">
+                <i class="fa-solid fa-filter"></i> Filter
+            </button>
+
+            <button class="logout"
+                    onclick="logout()">
+                Logout
+            </button>
+
+        </div>
+
+    </div>
+
+    <div class="student-records">
+
+        <table>
+
+            <thead>
+
+            <tr>
+
+                <th>ID</th>
+
+                <th>Username</th>
+
+                <th>Password</th>
+
+                <th>Email</th>
+
+                <th>Contact</th>
+
+                <th>Address</th>
+
+                <th>Status</th>
+
+                <th>Created Date</th>
+
+                <th>Action</th>
+
+            </tr>
+
+            </thead>
+
+            <tbody id="userTable">
+
+            </tbody>
+
+        </table>
+
+    </div>
+
+</div>
+
+<script src="usermanagement.js"></script>
+
+</body>
+</html>

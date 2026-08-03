@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Students</title>
+
+    <link rel="stylesheet" href="AdminDashboard.css">
+
+    <link rel="stylesheet"
+          href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+
+</head>
+
+<body>
+
+<div class="sidebar">
+
+    <div class="logo">
+
+        <i class="fa-solid fa-graduation-cap"></i>
+        <span>StudentMS</span>
+
+    </div>
+
+    <ul>
+
+        <li>
+            <a href="AdminDashboard.html">
+                <i class="fa-solid fa-house"></i>
+                Dashboard
+            </a>
+        </li>
+
+        <li>
+            <a href="Register.html">
+                <i class="fa-solid fa-user-plus"></i>
+                Add Student
+            </a>
+        </li>
+
+        <li class="active">
+            <a href="Students.html">
+                <i class="fa-solid fa-users"></i>
+                Students
+            </a>
+        </li>
+
+        <li>
+            <a href="usermanagement.html">
+                <i class="fa-solid fa-user-gear"></i>
+                User Management
+            </a>
+        </li>
+
+    </ul>
+
+</div>
+
+<div class="main">
+
+    <div class="topbar">
+
+        <h2>Student Management</h2>
+
+        <div class="right">
+
+            <input
+                    type="text"
+                    id="searchStudent"
+                    placeholder="Search Student Name">
+
+            <button class="logout"
+                    onclick="logout()">
+
+                Logout
+
+            </button>
+
+        </div>
+
+    </div>
+
+    <div class="student-records">
+
+        <table>
+
+            <thead>
+
+            <tr>
+
+                <th>ID</th>
+                <th>Name</th>
+                <th>Email</th>
+                <th>Department</th>
+                <th>Course</th>
+                <th>City</th>
+                <th>Age</th>
+                <th>Action</th>
+
+            </tr>
+
+            </thead>
+
+            <tbody id="studentTable">
+
+            </tbody>
+
+        </table>
+
+    </div>
+
+</div>
+
+<script src="students.js"></script>
+
+</body>
+
+</html>

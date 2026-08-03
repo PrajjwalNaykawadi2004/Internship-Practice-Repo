@@ -1,0 +1,243 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Profile</title>
+
+    <link rel="stylesheet" href="AdminDashboard.css">
+    <link rel="stylesheet" href="AdminProfile.css">
+
+    <link rel="stylesheet"
+          href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+</head>
+
+<body>
+
+<div class="sidebar">
+
+    <div class="logo">
+        <i class="fa-solid fa-graduation-cap"></i>
+        <span>StudentMS</span>
+    </div>
+
+    <ul>
+
+        <li>
+            <a href="AdminDashboard.html">
+                <i class="fa-solid fa-house"></i>
+                Dashboard
+            </a>
+        </li>
+
+        <li>
+            <a href="Register.html">
+                <i class="fa-solid fa-user-plus"></i>
+                Add Student
+            </a>
+        </li>
+
+        <li>
+            <a href="Students.html">
+                <i class="fa-solid fa-users"></i>
+                Students
+            </a>
+        </li>
+
+        <li>
+            <a href="UserManagement.html">
+                <i class="fa-solid fa-user-gear"></i>
+                User Management
+            </a>
+        </li>
+
+        <li class="active">
+            <a href="AdminProfile.html">
+                <i class="fa-solid fa-user"></i>
+                My Profile
+            </a>
+        </li>
+
+    </ul>
+
+</div>
+
+<div class="main">
+
+    <div class="topbar">
+
+        <h2>Admin Profile</h2>
+
+        <div class="admin-info">
+
+            <img id="adminTopPhoto"
+                 src="images/default-user.png"
+                 alt="Admin">
+
+            <span id="adminWelcome">
+                Welcome Admin
+            </span>
+
+        </div>
+
+    </div>
+
+
+    <div class="profile-card">
+
+        <div class="profile-header">
+
+            <div class="profile-avatar">
+
+                <img id="profileImage"
+                     src="images/default-user.png"
+                     alt="Profile">
+
+                <p class="photo-text">
+                    Profile Photo
+                </p>
+
+            </div>
+
+
+            <div class="profile-info">
+
+                <h2 id="profileTitle">
+                    My Profile
+                </h2>
+
+                <p>
+                    Administrator Account Information
+                </p>
+
+                <div class="upload-section">
+
+                    <input
+                            type="file"
+                            id="profilePhotoFile"
+                            hidden
+                            accept="image/*">
+
+                    <label
+                            for="profilePhotoFile"
+                            class="choose-btn">
+
+                        📂 Choose Photo
+
+                    </label>
+
+                    <span id="fileName"></span>
+
+                    <button
+                            class="update-profile-btn"
+                            onclick="uploadProfilePhoto()">
+
+                        📷 Upload Photo
+
+                    </button>
+
+                    <button
+                            class="update-profile-btn"
+                            onclick="openUpdateProfile()">
+
+                        ✏️ Update Profile
+
+                    </button>
+
+                    <button
+                            class="update-profile-btn"
+                            onclick="window.location.href='ChangePassword.html'">
+
+                        🔒 Change Password
+
+                    </button>
+
+                </div>
+
+            </div>
+
+        </div>
+
+        <h3 class="section-title">
+            Admin Information
+        </h3>
+
+        <table class="profile-table">
+
+            <tr>
+                <th>Username</th>
+                <td id="profileUsername"></td>
+            </tr>
+
+            <tr>
+                <th>Email</th>
+                <td id="profileEmail"></td>
+            </tr>
+
+            <tr>
+                <th>Contact</th>
+                <td id="profileContact"></td>
+            </tr>
+
+            <tr>
+                <th>Address</th>
+                <td id="profileAddress"></td>
+            </tr>
+
+            <tr>
+                <th>Role</th>
+                <td id="profileRole"></td>
+            </tr>
+
+            <tr>
+                <th>Status</th>
+                <td id="profileStatus"></td>
+            </tr>
+
+            <tr>
+                <th>Created Date</th>
+                <td id="profileCreatedDate"></td>
+            </tr>
+
+        </table>
+
+    </div>
+
+</div>
+
+
+<!-- Update Profile Modal -->
+
+<div id="updateProfileModal" class="profile-modal">
+
+    <div class="profile-modal-content">
+
+        <span class="close-modal"
+              onclick="closeUpdateProfile()">
+            &times;
+        </span>
+
+        <h2>Update Profile</h2>
+
+        <label>Email</label>
+        <input type="email" id="updateEmail">
+
+        <label>Contact</label>
+        <input type="text" id="updateContact">
+
+        <label>Address</label>
+        <textarea id="updateAddress"></textarea>
+
+        <button class="save-profile-btn"
+                onclick="saveProfile()">
+            Save Changes
+        </button>
+
+    </div>
+
+</div>
+
+<script src="AdminProfile.js"></script>
+
+</body>
+</html>

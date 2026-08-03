@@ -1,0 +1,204 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>My Profile</title>
+
+    <link rel="stylesheet" href="UserDashboard.css">
+    <link rel="stylesheet" href="Profile.css">
+</head>
+
+<body>
+
+<div class="sidebar">
+
+    <h2>🎓 Student Portal</h2>
+
+    <ul>
+
+        <li>
+            <a href="UserDashboard.html">🏠 Dashboard</a>
+        </li>
+
+        <li class="active">
+            <a href="Profile.html">👤 My Profile</a>
+        </li>
+
+        <li>
+            <a href="#">📚 My Details</a>
+        </li>
+
+        <li>
+            <a href="#" onclick="logout()">🚪 Logout</a>
+        </li>
+
+    </ul>
+
+</div>
+
+<div class="main">
+
+    <div class="topbar">
+        <h2>My Profile</h2>
+        <span id="username">Welcome User</span>
+    </div>
+
+    <div class="profile-card">
+
+        <!-- Profile Header -->
+        <div class="profile-header">
+
+            <div class="profile-avatar">
+
+                <img id="profileImage"
+                     src="images/default-user.png"
+                     alt="">
+
+                <span class="photo-text">Profile Photo</span>
+
+            </div>
+
+            <div class="profile-info">
+
+                <h2 id="profileTitle">My Profile</h2>
+
+                <p id="profileSubtitle">
+                    Personal account information
+                </p>
+
+                <div class="upload-section">
+                    <p id="fileName"></p>
+
+                    <input type="file"
+                           id="profilePhotoFile"
+                           accept="image/*"
+                           hidden>
+
+                    <label for="profilePhotoFile" class="choose-btn">
+                        📂 Choose Photo
+                    </label>
+
+                    <button class="update-profile-btn"
+                            onclick="uploadProfilePhoto()">
+                        📷 Upload Photo
+                    </button>
+
+                    <button class="update-profile-btn"
+                            onclick="openUpdateProfile()">
+                        ✏️ Update Profile
+                    </button>
+
+                    <button class="update-profile-btn"
+                            onclick="window.location.href='ChangePassword.html'">
+                        🔒 Change Password
+                    </button>
+
+                </div>
+
+                </div>
+
+
+        </div>
+
+        <h3 class="section-title">
+            Profile Information
+        </h3>
+
+        <table class="profile-table">
+
+            <tbody>
+
+            <tr>
+                <th>Username</th>
+                <td id="profileUsername"></td>
+            </tr>
+
+            <tr>
+                <th>Email</th>
+                <td id="profileEmail"></td>
+            </tr>
+
+            <tr>
+                <th>Contact</th>
+                <td id="profileContact"></td>
+            </tr>
+
+            <tr>
+                <th>Address</th>
+                <td id="profileAddress"></td>
+            </tr>
+
+            <tr>
+                <th>Role</th>
+                <td id="profileRole"></td>
+            </tr>
+
+            <tr>
+                <th>Status</th>
+                <td id="profileStatus"></td>
+            </tr>
+
+            <tr>
+                <th>Created Date</th>
+                <td id="profileCreatedDate"></td>
+            </tr>
+
+            </tbody>
+
+        </table>
+
+        <button class="update-profile-btn"
+                onclick="openUpdateProfile()">
+            ✏️ Update Profile
+        </button>
+
+    </div>
+
+</div>
+
+<!-- Update Profile Modal -->
+
+<div id="updateProfileModal" class="profile-modal">
+
+    <div class="profile-modal-content">
+
+        <span class="close-modal"
+              onclick="closeUpdateProfile()">
+            &times;
+        </span>
+
+        <h2>Update Profile</h2>
+
+        <label>Email</label>
+
+        <input type="email"
+               id="updateEmail"
+               placeholder="Enter Email">
+
+        <label>Contact</label>
+
+        <input type="text"
+               id="updateContact"
+               placeholder="Enter Contact Number">
+
+        <label>Address</label>
+
+        <textarea id="updateAddress"
+                  placeholder="Enter Address"></textarea>
+
+        <button class="save-profile-btn"
+                onclick="saveProfile()">
+            Save Changes
+        </button>
+
+    </div>
+
+</div>
+
+<script src="Profile.js"></script>
+
+</body>
+
+</html>

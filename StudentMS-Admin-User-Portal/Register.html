@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>User Registration</title>
+
+    <link rel="stylesheet" href="/style.css">
+
+</head>
+
+
+<body class="register-page">
+
+
+<div class="container">
+
+
+    <h2>👤 User Registration</h2>
+
+
+    <form id="registerForm">
+
+
+        <label>Username</label>
+
+        <input type="text" id="username" placeholder="Enter Username" required>
+
+
+
+        <label>Password</label>
+
+        <input type="password" id="password" placeholder="Enter Password" required>
+
+        <label>Email</label>
+
+        <input type="email"
+                id="email"
+                placeholder="Enter Email"
+                required>
+
+        <label>Contact Number</label>
+
+        <input type="tel"
+                id="contact"
+                placeholder="Enter Contact Number"
+                required>
+
+        <label>Address</label>
+
+        <textarea id="address"
+                  placeholder="Enter Address"
+                  required></textarea>
+
+        <button type="submit">
+            Register
+        </button>
+
+    </form>
+
+    <p id="message"></p>
+
+    <p class="link">
+
+        Already have an account?
+
+        <a href="Login.html">
+            Login Here
+        </a>
+
+    </p>
+
+
+</div>
+
+
+
+<script>
+
+
+    document.getElementById("registerForm")
+    .addEventListener("submit", async function(e){
+
+
+    e.preventDefault();
+
+
+
+    let user = {
+
+    username: document.getElementById("username").value,
+
+    password: document.getElementById("password").value,
+
+    email: document.getElementById("email").value,
+
+    contact: document.getElementById("contact").value,
+
+    address: document.getElementById("address").value
+
+    };
+
+
+
+    try{
+
+
+    let response = await fetch("/auth/register",{
+
+    method:"POST",
+
+    headers:{
+
+    "Content-Type":"application/json"
+
+    },
+
+    body:JSON.stringify(user)
+
+    });
+
+
+
+    let result = await response.text();
+
+
+
+    if(response.ok){
+
+
+    alert("Registration Successful");
+
+
+    window.location.href="StudentRegister.html";
+
+
+    }
+
+    else{
+
+
+    document.getElementById("message").innerText=result;
+
+
+    }
+
+
+
+    }
+
+    catch(error){
+
+
+    document.getElementById("message").innerText="Server Error";
+
+
+    }
+
+
+
+    });
+
+
+
+</script>
+
+
+</body>
+
+</html>

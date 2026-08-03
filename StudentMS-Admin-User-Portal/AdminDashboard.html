@@ -1,0 +1,204 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Student Management Dashboard</title>
+
+    <link rel="stylesheet" href="AdminDashboard.css">
+
+    <link rel="stylesheet"
+          href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+
+<body>
+
+<div class="sidebar">
+
+    <div class="logo">
+        <i class="fa-solid fa-graduation-cap"></i>
+        <span>StudentMS</span>
+    </div>
+
+    <ul>
+
+        <li class="active">
+            <a href="AdminDashboard.html">
+                <i class="fa-solid fa-house"></i>
+                Dashboard
+            </a>
+        </li>
+
+        <li>
+            <a href="Register.html">
+                <i class="fa-solid fa-user-plus"></i>
+                Add Student
+            </a>
+        </li>
+
+        <li>
+            <a href="Students.html">
+                <i class="fa-solid fa-users"></i>
+                Students
+            </a>
+        </li>
+
+        <li>
+            <a href="usermanagement.html">
+                <i class="fa-solid fa-user-gear"></i>
+                User Management
+            </a>
+        </li>
+
+        <li class="active">
+            <a href="AdminProfile.html">
+                <i class="fa-solid fa-user"></i>
+                My Profile
+            </a>
+        </li>
+
+        <li>
+            <a href="#">
+                <i class="fa-solid fa-gear"></i>
+                Settings
+            </a>
+        </li>
+
+    </ul>
+
+</div>
+
+
+<div class="main">
+
+    <div class="topbar">
+
+        <div>
+            <h2>Dashboard</h2>
+            <p id="welcomeText">Welcome back 👋</p>
+        </div>
+
+        <div class="right">
+
+            <i class="fa-solid fa-bell"></i>
+
+            <div class="admin-info">
+
+                <img id="adminProfileImage"
+                     src="images/default-user.png"
+                     alt="Admin"
+                     onclick="window.location.href='AdminProfile.html'">
+
+                <span id="adminName">
+            Welcome Admin
+        </span>
+
+            </div>
+
+            <button class="logout" onclick="logout()">
+                Logout
+            </button>
+
+        </div>
+
+    </div>
+
+    <div class="cards">
+
+        <div class="card blue">
+
+            <div>
+                <h4>Total Users</h4>
+                <h2 id="totalUsers">0</h2>
+            </div>
+
+            <i class="fa-solid fa-users"></i>
+
+        </div>
+
+
+        <div class="card green">
+
+            <div>
+                <h4>Active Users</h4>
+                <h2 id="activeUsers">0</h2>
+            </div>
+
+            <i class="fa-solid fa-user-check"></i>
+
+        </div>
+
+
+        <div class="card orange">
+
+            <div>
+                <h4>Inactive Users</h4>
+                <h2 id="inactiveUsers">0</h2>
+            </div>
+
+            <i class="fa-solid fa-user-xmark"></i>
+
+        </div>
+
+    </div>
+
+
+    <div class="charts">
+
+        <div class="chart-box">
+
+            <h3>User Status</h3>
+
+            <canvas id="pieChart"></canvas>
+
+        </div>
+
+        <div class="chart-box">
+
+            <h3>User Overview</h3>
+
+            <canvas id="barChart"></canvas>
+
+        </div>
+
+    </div>
+
+
+    <div class="student-records">
+
+        <div class="table-header">
+
+            <h2>Recent Users</h2>
+
+        </div>
+
+        <table>
+
+            <thead>
+
+            <tr>
+
+                <th>Username</th>
+                <th>Status</th>
+                <th>Created Date</th>
+
+            </tr>
+
+            </thead>
+
+            <tbody id="recentTable">
+
+            </tbody>
+
+        </table>
+
+    </div>
+
+</div>
+
+<script src="AdminDashboard.js"></script>
+
+</body>
+</html>
