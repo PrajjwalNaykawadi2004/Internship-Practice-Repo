@@ -1,0 +1,282 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Activity Logs</title>
+
+    <link rel="stylesheet" href="AdminDashboard.css">
+
+    <link rel="stylesheet"
+          href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+</head>
+
+<body>
+
+<!-- ================= SIDEBAR ================= -->
+
+<div class="sidebar">
+
+    <div class="logo">
+        <i class="fa-solid fa-graduation-cap"></i>
+        <span>StudentMS</span>
+    </div>
+
+    <ul>
+
+        <li>
+            <a href="AdminDashboard.html">
+                <i class="fa-solid fa-house"></i>
+                Dashboard
+            </a>
+        </li>
+
+        <li>
+            <a href="Students.html">
+                <i class="fa-solid fa-users"></i>
+                Students
+            </a>
+        </li>
+
+        <li>
+            <a href="usermanagement.html">
+                <i class="fa-solid fa-user-gear"></i>
+                User Management
+            </a>
+        </li>
+
+        <li class="active">
+            <a href="ActivityLogs.html">
+                <i class="fa-solid fa-clock-rotate-left"></i>
+                Activity Logs
+            </a>
+        </li>
+
+        <li>
+            <a href="AdminProfile.html">
+                <i class="fa-solid fa-user"></i>
+                My Profile
+            </a>
+        </li>
+
+    </ul>
+
+</div>
+
+
+<!-- ================= MAIN ================= -->
+
+<div class="main">
+
+    <!-- ================= TOPBAR ================= -->
+
+    <div class="topbar">
+
+        <div>
+
+            <h2>Activity Logs</h2>
+
+            <p>
+                View system activities and audit records
+            </p>
+
+        </div>
+
+        <div class="right">
+
+            <button class="logout" onclick="logout()">
+                Logout
+            </button>
+
+        </div>
+
+    </div>
+
+
+    <!-- ================= FILTER SECTION ================= -->
+
+    <div class="student-records">
+
+        <div style="
+            display:flex;
+            gap:15px;
+            align-items:center;
+            flex-wrap:wrap;
+            margin-bottom:20px;
+        ">
+
+            <!-- Username Search -->
+
+            <input
+                    type="text"
+                    id="usernameSearch"
+                    placeholder="Search Username..."
+                    style="
+                    width:230px;
+                    padding:11px 15px;
+                    border:1px solid #d1d5db;
+                    border-radius:8px;
+                    outline:none;
+                "
+            >
+
+
+            <!-- Action Filter -->
+
+            <select
+                    id="actionFilter"
+                    style="
+                    padding:11px 15px;
+                    border:1px solid #d1d5db;
+                    border-radius:8px;
+                    outline:none;
+                "
+            >
+
+                <option value="">All Actions</option>
+
+                <option value="LOGIN">LOGIN</option>
+
+                <option value="LOGOUT">LOGOUT</option>
+
+                <option value="REGISTRATION">REGISTRATION</option>
+
+                <option value="CREATE">CREATE</option>
+
+                <option value="UPDATE">UPDATE</option>
+
+                <option value="DELETE">DELETE</option>
+
+                <option value="PASSWORD_CHANGE">
+                    PASSWORD CHANGE
+                </option>
+
+            </select>
+
+
+            <!-- Filter Button -->
+
+            <button
+                    class="filter-btn"
+                    onclick="loadLogs(0)"
+            >
+                <i class="fa-solid fa-filter"></i>
+                Filter
+            </button>
+
+
+            <!-- Clear Button -->
+
+            <button
+                    class="edit-btn"
+                    onclick="clearFilters()"
+            >
+                <i class="fa-solid fa-rotate-left"></i>
+                Clear
+            </button>
+
+
+            <!-- Export -->
+
+            <button
+                    class="filter-btn"
+                    onclick="exportCSV()"
+            >
+                <i class="fa-solid fa-file-csv"></i>
+                Export CSV
+            </button>
+
+        </div>
+
+
+        <!-- ================= TABLE ================= -->
+
+        <div style="overflow-x:auto;">
+
+            <table>
+
+                <thead>
+
+                <tr>
+
+                    <th>ID</th>
+
+                    <th>Username</th>
+
+                    <th>Action</th>
+
+                    <th>Entity</th>
+
+                    <th>Entity ID</th>
+
+                    <th>Description</th>
+
+                    <th>IP Address</th>
+
+                    <th>Timestamp</th>
+
+                </tr>
+
+                </thead>
+
+
+                <tbody id="activityTable">
+
+                </tbody>
+
+            </table>
+
+        </div>
+
+
+        <!-- ================= PAGINATION ================= -->
+
+        <div style="
+            display:flex;
+            justify-content:center;
+            align-items:center;
+            gap:15px;
+            margin-top:20px;
+        ">
+
+            <button
+                    class="edit-btn"
+                    id="previousBtn"
+                    onclick="previousPage()"
+            >
+                <i class="fa-solid fa-chevron-left"></i>
+                Previous
+            </button>
+
+
+            <span
+                    id="pageInfo"
+                    style="font-weight:600;"
+            >
+                Page 1
+            </span>
+
+
+            <button
+                    class="edit-btn"
+                    id="nextBtn"
+                    onclick="nextPage()"
+            >
+                Next
+                <i class="fa-solid fa-chevron-right"></i>
+            </button>
+
+        </div>
+
+    </div>
+
+</div>
+
+
+<script src="ActivityLogs.js"></script>
+
+</body>
+
+</html>

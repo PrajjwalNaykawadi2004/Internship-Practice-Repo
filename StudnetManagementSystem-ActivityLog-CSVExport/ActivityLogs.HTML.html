@@ -1,0 +1,373 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Activity Logs - StudentMS</title>
+
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 20px;
+            background: #f5f6fa;
+        }
+
+        h1 {
+            margin-bottom: 20px;
+        }
+
+        .toolbar {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 20px;
+            flex-wrap: wrap;
+        }
+
+        input, select, button {
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+        }
+
+        button {
+            cursor: pointer;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            background: white;
+        }
+
+        th, td {
+            padding: 12px;
+            border: 1px solid #ddd;
+            text-align: left;
+        }
+
+        th {
+            background: #eee;
+        }
+
+        .pagination {
+            margin-top: 20px;
+            display: flex;
+            gap: 10px;
+            align-items: center;
+        }
+    </style>
+</head>
+
+<body>
+
+<h1>Activity Logs</h1>
+
+<div class="toolbar">
+
+    <input
+            type="text"
+            id="usernameSearch"
+            placeholder="Search username">
+
+    <select id="actionFilter">
+        <option value="">All Actions</option>
+        <option value="LOGIN">Login</option>
+        <option value="LOGOUT">Logout</option>
+        <option value="REGISTRATION">Registration</option>
+        <option value="CREATE">Create</option>
+        <option value="UPDATE">Update</option>
+        <option value="DELETE">Delete</option>
+        <option value="PASSWORD_CHANGE">Password Change</option>
+    </select>
+
+    <button onclick="searchLogs()">
+        Search
+    </button>
+
+    <button onclick="exportCSV()">
+        Export CSV
+    </button>
+
+</div>
+
+<table>
+
+    <thead>
+    <tr>
+        <th>ID</th>
+        <th>Username</th>
+        <th>Action</th>
+        <th>Entity</th>
+        <th>Entity ID</th>
+        <th>Description</th>
+        <th>IP Address</th>
+        <th>Date & Time</th>
+    </tr>
+    </thead>
+
+    <tbody id="logsTableBody">
+    </tbody>
+
+</table>
+
+<div class="pagination">
+
+    <button onclick="previousPage()">
+        Previous
+    </button>
+
+    <span id="pageInfo">
+        Page 1
+    </span>
+
+    <button onclick="nextPage()">
+        Next
+    </button>
+
+</div>
+
+<script>
+
+    const API_URL = "http://localhost:8082/activity-logs";
+
+    let currentPage = 0;
+    const pageSize = 10;
+    let totalPages = 0;
+
+
+    async function loadLogs() {
+
+        const token = localStorage.getItem("token");
+
+        if (!token) {
+            alert("Please Login First");
+            window.location.href = "Login.html";
+            return;
+        }
+
+        const role = localStorage.getItem("role");
+
+        if(role !== "ADMIN")
+        {
+            alert("Access Denied. Admin Only.");
+            window.location.href = "AdminDashboard.html";
+            return;
+        }
+
+        const username =
+            document.getElementById("usernameSearch").value.trim();
+
+        const action =
+            document.getElementById("actionFilter").value;
+
+        let url =
+            `${API_URL}?page=${currentPage}&size=${pageSize}`;
+
+        if (username) {
+            url += `&username=${encodeURIComponent(username)}`;
+        }
+
+        if (action) {
+            url += `&action=${encodeURIComponent(action)}`;
+        }
+
+        try {
+
+            const response = await fetch(url, {
+                method: "GET",
+                headers: {
+                    "Authorization": "Bearer " + token
+                }
+            });
+
+            if (response.status === 403) {
+                alert("Access Denied. Admin Only.");
+                return;
+            }
+
+            if (!response.ok) {
+                throw new Error("Failed to load activity logs");
+            }
+
+            const data = await response.json();
+
+            totalPages = data.totalPages;
+
+            displayLogs(data.content);
+
+            document.getElementById("pageInfo").innerText =
+                `Page ${currentPage + 1} of ${totalPages || 1}`;
+
+        } catch (error) {
+
+            console.error(error);
+            alert("Failed to load activity logs.");
+
+        }
+    }
+
+    function searchLogs()
+    {
+        currentPage = 0;
+        loadLogs();
+    }
+
+
+    function displayLogs(logs) {
+
+        const tbody =
+            document.getElementById("logsTableBody");
+
+        tbody.innerHTML = "";
+
+        if (!logs || logs.length === 0) {
+
+            tbody.innerHTML =
+                `<tr>
+                    <td colspan="8">
+                        No Activity Logs Found
+                    </td>
+                </tr>`;
+
+            return;
+        }
+
+        logs.forEach(log => {
+
+            const row = document.createElement("tr");
+
+            row.innerHTML = `
+                <td>${log.id ?? ""}</td>
+                <td>${log.username ?? ""}</td>
+                <td>${log.action ?? ""}</td>
+                <td>${log.entityName ?? ""}</td>
+                <td>${log.entityId ?? ""}</td>
+                <td>${log.description ?? ""}</td>
+                <td>${log.ipAddress ?? ""}</td>
+                <td>${log.timestamp ?? ""}</td>
+            `;
+
+            tbody.appendChild(row);
+
+        });
+    }
+
+
+    function previousPage() {
+
+        if (currentPage > 0) {
+
+            currentPage--;
+
+            loadLogs();
+        }
+    }
+
+
+    function nextPage() {
+
+        if (currentPage < totalPages - 1) {
+
+            currentPage++;
+
+            loadLogs();
+        }
+    }
+
+
+    async function exportCSV() {
+
+        const token = localStorage.getItem("token");
+
+        const role = localStorage.getItem("role");
+
+        if(!token)
+        {
+            alert("Please Login First");
+            window.location.href = "Login.html";
+            return;
+        }
+
+        if(role !== "ADMIN")
+        {
+            alert("Access Denied. Admin Only.");
+            return;
+        }
+
+        const username =
+            document.getElementById("usernameSearch").value.trim();
+
+        const action =
+            document.getElementById("actionFilter").value;
+
+        let params = new URLSearchParams();
+
+        if (username) {
+            params.append("username", username);
+        }
+
+        if (action) {
+            params.append("action", action);
+        }
+
+        let url = `${API_URL}/export`;
+
+        if (params.toString()) {
+            url += "?" + params.toString();
+        }
+
+        try {
+
+            const response = await fetch(url, {
+
+                headers: {
+                    "Authorization": "Bearer " + token
+                }
+
+            });
+
+            if (response.status === 403) {
+                alert("Access Denied. Admin Only.");
+                return;
+            }
+
+            if (!response.ok) {
+                throw new Error("CSV Export Failed");
+            }
+
+            const blob = await response.blob();
+
+            const downloadUrl =
+                window.URL.createObjectURL(blob);
+
+            const link =
+                document.createElement("a");
+
+            link.href = downloadUrl;
+            link.download = "activity_logs.csv";
+
+            document.body.appendChild(link);
+
+            link.click();
+
+            link.remove();
+
+            window.URL.revokeObjectURL(downloadUrl);
+
+        } catch (error) {
+
+            console.error(error);
+            alert("CSV Export Failed.");
+
+        }
+    }
+
+
+    loadLogs();
+
+</script>
+
+</body>
+</html>
