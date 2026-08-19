@@ -11,6 +11,7 @@ Java Full Stack Development
 -Spring Boot
 -REST APIs
 -MySQL
+-PostgreSQL
 -MongoDB
 -Git & GitHub
 -Linux
