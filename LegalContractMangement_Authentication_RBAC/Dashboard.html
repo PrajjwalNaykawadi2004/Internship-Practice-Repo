@@ -1,0 +1,1087 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Dashboard | Legal Contract Management</title>
+
+    <style>
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: Arial, sans-serif;
+        }
+
+
+        body {
+            background: #f4f7fb;
+            color: #1f2937;
+        }
+
+
+        /* =========================
+           NAVBAR
+        ========================= */
+
+        .navbar {
+            height: 75px;
+
+            background:
+                linear-gradient(
+                    135deg,
+                    #1e3a8a,
+                    #2563eb
+                );
+
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+
+            padding: 0 35px;
+
+            color: white;
+
+            box-shadow:
+                0 4px 20px rgba(0,0,0,0.15);
+        }
+
+
+        .brand {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+
+        .brand-icon {
+            width: 45px;
+            height: 45px;
+
+            display: flex;
+            align-items: center;
+            justify-content: center;
+
+            background: rgba(255,255,255,0.15);
+
+            border-radius: 12px;
+
+            font-size: 24px;
+        }
+
+
+        .brand h2 {
+            font-size: 20px;
+            font-weight: 600;
+        }
+
+
+        .profile-section {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+        }
+
+
+        .profile-info {
+            text-align: right;
+        }
+
+
+        .profile-info h4 {
+            font-size: 15px;
+        }
+
+
+        .profile-info p {
+            font-size: 12px;
+            opacity: 0.8;
+            margin-top: 3px;
+        }
+
+
+        .logout-btn {
+
+            background: #ef4444;
+
+            border: none;
+
+            color: white;
+
+            padding: 11px 18px;
+
+            border-radius: 8px;
+
+            cursor: pointer;
+
+            font-size: 14px;
+
+            font-weight: 600;
+
+            transition: 0.3s;
+
+        }
+
+
+        .logout-btn:hover {
+
+            background: #dc2626;
+
+            transform: translateY(-2px);
+
+        }
+
+
+
+        /* =========================
+           MAIN LAYOUT
+        ========================= */
+
+        .layout {
+
+            display: flex;
+
+            min-height: calc(100vh - 75px);
+
+        }
+
+
+
+        /* =========================
+           SIDEBAR
+        ========================= */
+
+        .sidebar {
+
+            width: 250px;
+
+            background:
+                linear-gradient(
+                    180deg,
+                    #172033,
+                    #111827
+                );
+
+            padding: 25px 15px;
+
+        }
+
+
+        .menu-title {
+
+            color: #94a3b8;
+
+            font-size: 11px;
+
+            font-weight: bold;
+
+            letter-spacing: 1px;
+
+            margin: 10px 15px 15px;
+
+        }
+
+
+        .sidebar a {
+
+            display: flex;
+
+            align-items: center;
+
+            gap: 14px;
+
+            text-decoration: none;
+
+            color: #cbd5e1;
+
+            padding: 14px 15px;
+
+            border-radius: 10px;
+
+            margin-bottom: 8px;
+
+            transition: 0.3s;
+
+            font-size: 15px;
+
+        }
+
+
+        .sidebar a:hover {
+
+            background: rgba(59,130,246,0.2);
+
+            color: white;
+
+        }
+
+
+        .sidebar a.active {
+
+            background:
+                linear-gradient(
+                    135deg,
+                    #2563eb,
+                    #1d4ed8
+                );
+
+            color: white;
+
+            box-shadow:
+                0 5px 15px rgba(37,99,235,0.3);
+
+        }
+
+
+        .sidebar-icon {
+
+            font-size: 18px;
+
+        }
+
+
+
+        /* =========================
+           CONTENT
+        ========================= */
+
+        .content {
+
+            flex: 1;
+
+            padding: 40px;
+
+        }
+
+
+        .welcome-section {
+
+            display: flex;
+
+            justify-content: space-between;
+
+            align-items: center;
+
+            margin-bottom: 35px;
+
+        }
+
+
+        .welcome-section h1 {
+
+            font-size: 30px;
+
+            margin-bottom: 8px;
+
+        }
+
+
+        .welcome-section p {
+
+            color: #64748b;
+
+            font-size: 15px;
+
+        }
+
+
+        .date-box {
+
+            background: white;
+
+            padding: 14px 20px;
+
+            border-radius: 12px;
+
+            box-shadow:
+                0 5px 20px rgba(0,0,0,0.06);
+
+            color: #475569;
+
+            font-size: 14px;
+
+        }
+
+
+
+        /* =========================
+           STATISTICS CARDS
+        ========================= */
+
+        .stats {
+
+            display: grid;
+
+            grid-template-columns:
+                repeat(auto-fit, minmax(220px, 1fr));
+
+            gap: 22px;
+
+            margin-bottom: 35px;
+
+        }
+
+
+        .stat-card {
+
+            background: white;
+
+            padding: 25px;
+
+            border-radius: 16px;
+
+            box-shadow:
+                0 8px 25px rgba(0,0,0,0.06);
+
+            transition: 0.3s;
+
+            position: relative;
+
+            overflow: hidden;
+
+        }
+
+
+        .stat-card:hover {
+
+            transform: translateY(-5px);
+
+            box-shadow:
+                0 15px 35px rgba(0,0,0,0.1);
+
+        }
+
+
+        .stat-card::before {
+
+            content: "";
+
+            position: absolute;
+
+            left: 0;
+
+            top: 0;
+
+            width: 5px;
+
+            height: 100%;
+
+            background: #2563eb;
+
+        }
+
+
+        .stat-header {
+
+            display: flex;
+
+            justify-content: space-between;
+
+            align-items: center;
+
+        }
+
+
+        .stat-title {
+
+            color: #64748b;
+
+            font-size: 14px;
+
+        }
+
+
+        .stat-icon {
+
+            width: 45px;
+
+            height: 45px;
+
+            display: flex;
+
+            align-items: center;
+
+            justify-content: center;
+
+            background: #eff6ff;
+
+            border-radius: 12px;
+
+            font-size: 22px;
+
+        }
+
+
+        .stat-number {
+
+            font-size: 30px;
+
+            font-weight: bold;
+
+            margin-top: 18px;
+
+            color: #1e293b;
+
+        }
+
+
+        .stat-text {
+
+            font-size: 13px;
+
+            color: #94a3b8;
+
+            margin-top: 5px;
+
+        }
+
+
+
+        /* =========================
+           DASHBOARD CARDS
+        ========================= */
+
+        .section-title {
+
+            margin-bottom: 20px;
+
+            font-size: 20px;
+
+        }
+
+
+        .dashboard-grid {
+
+            display: grid;
+
+            grid-template-columns:
+                repeat(auto-fit, minmax(260px, 1fr));
+
+            gap: 22px;
+
+        }
+
+
+        .dashboard-card {
+
+            background: white;
+
+            padding: 28px;
+
+            border-radius: 16px;
+
+            box-shadow:
+                0 8px 25px rgba(0,0,0,0.06);
+
+            transition: 0.3s;
+
+        }
+
+
+        .dashboard-card:hover {
+
+            transform: translateY(-5px);
+
+        }
+
+
+        .card-icon {
+
+            width: 55px;
+
+            height: 55px;
+
+            display: flex;
+
+            align-items: center;
+
+            justify-content: center;
+
+            font-size: 26px;
+
+            background: #eff6ff;
+
+            border-radius: 14px;
+
+            margin-bottom: 18px;
+
+        }
+
+
+        .dashboard-card h3 {
+
+            margin-bottom: 10px;
+
+            font-size: 18px;
+
+        }
+
+
+        .dashboard-card p {
+
+            color: #64748b;
+
+            font-size: 14px;
+
+            line-height: 1.6;
+
+        }
+
+
+        .card-link {
+
+            display: inline-block;
+
+            margin-top: 18px;
+
+            color: #2563eb;
+
+            text-decoration: none;
+
+            font-weight: 600;
+
+            font-size: 14px;
+
+        }
+
+
+        .card-link:hover {
+
+            text-decoration: underline;
+
+        }
+
+
+
+        /* =========================
+           RESPONSIVE
+        ========================= */
+
+        @media(max-width: 768px) {
+
+            .sidebar {
+
+                width: 75px;
+
+            }
+
+            .sidebar span,
+            .menu-title {
+
+                display: none;
+
+            }
+
+            .sidebar a {
+
+                justify-content: center;
+
+            }
+
+            .content {
+
+                padding: 25px;
+
+            }
+
+            .profile-info {
+
+                display: none;
+
+            }
+
+        }
+
+    </style>
+
+</head>
+
+
+<body>
+
+
+<!-- ================= NAVBAR ================= -->
+
+<div class="navbar">
+
+    <div class="brand">
+
+        <div class="brand-icon">
+            ⚖️
+        </div>
+
+        <h2>
+            Legal Contract Management
+        </h2>
+
+    </div>
+
+
+    <div class="profile-section">
+
+        <div class="profile-info">
+
+            <h4 id="topUsername">
+                User
+            </h4>
+
+            <p id="topRole">
+                USER
+            </p>
+
+        </div>
+
+
+        <button
+                class="logout-btn"
+                onclick="logout()"
+        >
+            Logout
+        </button>
+
+    </div>
+
+</div>
+
+
+
+<!-- ================= MAIN ================= -->
+
+<div class="layout">
+
+
+    <!-- ================= SIDEBAR ================= -->
+
+    <div class="sidebar">
+
+
+        <div class="menu-title">
+            MAIN MENU
+        </div>
+
+
+        <a href="/Dashboard.html" class="active">
+
+            <span class="sidebar-icon">
+                🏠
+            </span>
+
+            <span>
+                Dashboard
+            </span>
+
+        </a>
+
+
+
+        <a href="#">
+
+            <span class="sidebar-icon">
+                📄
+            </span>
+
+            <span>
+                Contracts
+            </span>
+
+        </a>
+
+
+
+        <a href="#">
+
+            <span class="sidebar-icon">
+                📁
+            </span>
+
+            <span>
+                Documents
+            </span>
+
+        </a>
+
+
+
+        <a href="#">
+
+            <span class="sidebar-icon">
+                ✏️
+            </span>
+
+            <span>
+                Modifications
+            </span>
+
+        </a>
+
+
+
+        <!-- ADMIN ONLY -->
+
+        <div
+                id="adminMenu"
+                style="display:none;"
+        >
+
+            <div class="menu-title">
+                ADMIN PANEL
+            </div>
+
+
+            <a href="#">
+
+                <span class="sidebar-icon">
+                    👥
+                </span>
+
+                <span>
+                    User Management
+                </span>
+
+            </a>
+
+        </div>
+
+
+    </div>
+
+
+
+    <!-- ================= CONTENT ================= -->
+
+    <div class="content">
+
+
+        <!-- WELCOME -->
+
+        <div class="welcome-section">
+
+            <div>
+
+                <h1>
+                    Welcome back,
+                    <span id="username">
+                        User
+                    </span>
+                    👋
+                </h1>
+
+
+                <p>
+                    Here's what's happening in your Legal Contract Management System.
+                </p>
+
+            </div>
+
+
+            <div class="date-box">
+
+                📅
+                <span id="currentDate"></span>
+
+            </div>
+
+        </div>
+
+
+
+        <!-- ================= STATS ================= -->
+
+        <div class="stats">
+
+
+            <div class="stat-card">
+
+                <div class="stat-header">
+
+                    <span class="stat-title">
+                        Total Contracts
+                    </span>
+
+                    <div class="stat-icon">
+                        📄
+                    </div>
+
+                </div>
+
+                <div class="stat-number">
+                    0
+                </div>
+
+                <div class="stat-text">
+                    Contracts in the system
+                </div>
+
+            </div>
+
+
+
+            <div class="stat-card">
+
+                <div class="stat-header">
+
+                    <span class="stat-title">
+                        Documents
+                    </span>
+
+                    <div class="stat-icon">
+                        📁
+                    </div>
+
+                </div>
+
+                <div class="stat-number">
+                    0
+                </div>
+
+                <div class="stat-text">
+                    Uploaded documents
+                </div>
+
+            </div>
+
+
+
+            <div class="stat-card">
+
+                <div class="stat-header">
+
+                    <span class="stat-title">
+                        Modifications
+                    </span>
+
+                    <div class="stat-icon">
+                        ✏️
+                    </div>
+
+                </div>
+
+                <div class="stat-number">
+                    0
+                </div>
+
+                <div class="stat-text">
+                    Contract modifications
+                </div>
+
+            </div>
+
+
+
+            <div class="stat-card">
+
+                <div class="stat-header">
+
+                    <span class="stat-title">
+                        Account Role
+                    </span>
+
+                    <div class="stat-icon">
+                        🛡️
+                    </div>
+
+                </div>
+
+                <div
+                        class="stat-number"
+                        id="roleCard"
+                        style="font-size:22px;"
+                >
+                    USER
+                </div>
+
+                <div class="stat-text">
+                    Current access level
+                </div>
+
+            </div>
+
+
+        </div>
+
+
+
+        <!-- ================= QUICK ACCESS ================= -->
+
+        <h2 class="section-title">
+            Quick Access
+        </h2>
+
+
+        <div class="dashboard-grid">
+
+
+            <!-- CONTRACTS -->
+
+            <div class="dashboard-card">
+
+                <div class="card-icon">
+                    📄
+                </div>
+
+                <h3>
+                    Contracts
+                </h3>
+
+                <p>
+                    Create, review and manage all legal contracts from one place.
+                </p>
+
+                <a href="#" class="card-link">
+                    Manage Contracts →
+                </a>
+
+            </div>
+
+
+
+            <!-- DOCUMENTS -->
+
+            <div class="dashboard-card">
+
+                <div class="card-icon">
+                    📁
+                </div>
+
+                <h3>
+                    Documents
+                </h3>
+
+                <p>
+                    Upload and manage important legal contract documents securely.
+                </p>
+
+                <a href="#" class="card-link">
+                    View Documents →
+                </a>
+
+            </div>
+
+
+
+            <!-- MODIFICATIONS -->
+
+            <div class="dashboard-card">
+
+                <div class="card-icon">
+                    ✏️
+                </div>
+
+                <h3>
+                    Modifications
+                </h3>
+
+                <p>
+                    Track contract changes and maintain complete modification history.
+                </p>
+
+                <a href="#" class="card-link">
+                    View Modifications →
+                </a>
+
+            </div>
+
+
+        </div>
+
+
+    </div>
+
+
+</div>
+
+
+
+<!-- ================= JAVASCRIPT ================= -->
+<script>
+
+    /* =========================
+       LOGIN CHECK
+    ========================= */
+
+    const username = localStorage.getItem("username");
+    const role = localStorage.getItem("role");
+
+
+    if (!username || !role)
+    {
+        alert(
+            "Please enter your username and password first. " +
+            "Only then you can access the Dashboard."
+        );
+
+        window.location.replace("/Login.html");
+    }
+    else
+    {
+
+        /* =========================
+           DISPLAY USER INFORMATION
+        ========================= */
+
+        document.getElementById("username").innerText = username;
+
+        document.getElementById("topUsername").innerText = username;
+
+        document.getElementById("topRole").innerText = role;
+
+        document.getElementById("roleCard").innerText = role;
+
+
+        /* =========================
+           ADMIN ACCESS
+        ========================= */
+
+        const adminMenu = document.getElementById("adminMenu");
+
+        adminMenu.style.display = "none";
+
+
+        if (role.trim().toUpperCase() === "ADMIN")
+        {
+            adminMenu.style.display = "block";
+        }
+
+
+        /* =========================
+           CURRENT DATE
+        ========================= */
+
+        const today = new Date();
+
+        document.getElementById("currentDate").innerText =
+            today.toLocaleDateString(
+                "en-IN",
+                {
+                    day: "numeric",
+                    month: "short",
+                    year: "numeric"
+                }
+            );
+    }
+
+
+
+    /* =========================
+       LOGOUT
+    ========================= */
+
+    function logout()
+    {
+        localStorage.removeItem("username");
+
+        localStorage.removeItem("role");
+
+        alert("You have been logged out successfully.");
+
+        window.location.replace("/Login.html");
+    }
+
+</script>
+
+</body>
+
+</html>
