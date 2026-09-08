@@ -1,0 +1,4479 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0">
+
+    <title>Contract Dashboard | Legal Contract Management</title>
+
+    <style>
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: Arial, sans-serif;
+        }
+
+        body {
+            background: #f4f7fb;
+            color: #1f2937;
+        }
+
+        /* =========================
+           NAVBAR
+        ========================= */
+
+        .navbar {
+            height: 75px;
+
+            background:
+                linear-gradient(
+                    135deg,
+                    #1e3a8a,
+                    #2563eb
+                );
+
+            display: flex;
+
+            align-items: center;
+
+            justify-content: space-between;
+
+            padding: 0 35px;
+
+            color: white;
+
+            box-shadow:
+                0 4px 20px rgba(0,0,0,0.15);
+        }
+
+        .brand {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .brand-icon {
+            width: 45px;
+            height: 45px;
+
+            display: flex;
+            align-items: center;
+            justify-content: center;
+
+            background:
+                rgba(255,255,255,0.15);
+
+            border-radius: 12px;
+
+            font-size: 24px;
+        }
+
+        .brand h2 {
+            font-size: 20px;
+            font-weight: 600;
+        }
+
+        .profile-section {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+        }
+
+        .profile-info {
+            text-align: right;
+        }
+
+        .profile-info h4 {
+            font-size: 15px;
+        }
+
+        .profile-info p {
+            font-size: 12px;
+            opacity: 0.8;
+            margin-top: 3px;
+        }
+
+        .logout-btn {
+            background: #ef4444;
+            border: none;
+            color: white;
+
+            padding: 11px 18px;
+
+            border-radius: 8px;
+
+            cursor: pointer;
+
+            font-size: 14px;
+            font-weight: 600;
+
+            transition: 0.3s;
+        }
+
+        .logout-btn:hover {
+            background: #dc2626;
+        }
+
+        /* =========================
+           LAYOUT
+        ========================= */
+
+        .layout {
+            display: flex;
+            min-height: calc(100vh - 75px);
+        }
+
+        /* =========================
+           SIDEBAR
+        ========================= */
+
+        .sidebar {
+            width: 250px;
+
+            background:
+                linear-gradient(
+                    180deg,
+                    #172033,
+                    #111827
+                );
+
+            padding: 25px 15px;
+
+            flex-shrink: 0;
+        }
+
+        .menu-title {
+            color: #94a3b8;
+
+            font-size: 11px;
+            font-weight: bold;
+
+            letter-spacing: 1px;
+
+            margin:
+                10px 15px 15px;
+        }
+
+        .sidebar a {
+            display: flex;
+
+            align-items: center;
+
+            gap: 14px;
+
+            text-decoration: none;
+
+            color: #cbd5e1;
+
+            padding: 14px 15px;
+
+            border-radius: 10px;
+
+            margin-bottom: 8px;
+
+            transition: 0.3s;
+
+            font-size: 15px;
+        }
+
+        .sidebar a:hover {
+            background:
+                rgba(59,130,246,0.2);
+
+            color: white;
+        }
+
+        .sidebar a.active {
+            background:
+                linear-gradient(
+                    135deg,
+                    #2563eb,
+                    #1d4ed8
+                );
+
+            color: white;
+
+            box-shadow:
+                0 5px 15px
+                rgba(37,99,235,0.3);
+        }
+
+        .sidebar-icon {
+            font-size: 18px;
+        }
+
+        /* =========================
+           CONTENT
+        ========================= */
+
+        .content {
+            flex: 1;
+
+            padding: 40px;
+
+            min-width: 0;
+        }
+
+        .page-header {
+            display: flex;
+
+            justify-content: space-between;
+
+            align-items: center;
+
+            margin-bottom: 30px;
+        }
+
+        .page-header h1 {
+            font-size: 30px;
+
+            color: #172033;
+
+            margin-bottom: 8px;
+        }
+
+        .page-header p {
+            color: #64748b;
+
+            font-size: 15px;
+        }
+
+        .add-btn {
+            background:
+                linear-gradient(
+                    135deg,
+                    #2563eb,
+                    #1d4ed8
+                );
+
+            color: white;
+
+            border: none;
+
+            padding: 12px 20px;
+
+            border-radius: 8px;
+
+            cursor: pointer;
+
+            font-size: 14px;
+
+            font-weight: 600;
+        }
+
+        .add-btn:hover {
+            opacity: 0.9;
+        }
+
+        /* =========================
+           STATS
+        ========================= */
+
+        .stats {
+            display: grid;
+
+            grid-template-columns:
+                repeat(4, 1fr);
+
+            gap: 20px;
+
+            margin-bottom: 30px;
+        }
+
+        .stat-card {
+            background: white;
+
+            padding: 22px;
+
+            border-radius: 15px;
+
+            box-shadow:
+                0 8px 25px
+                rgba(0,0,0,0.06);
+        }
+
+        .stat-title {
+            color: #64748b;
+
+            font-size: 14px;
+        }
+
+        .stat-number {
+            font-size: 30px;
+
+            font-weight: bold;
+
+            margin-top: 12px;
+
+            color: #172033;
+        }
+
+        /* =========================
+           TABLE CARD
+        ========================= */
+
+        .table-card {
+            background: white;
+
+            border-radius: 16px;
+
+            box-shadow:
+                0 8px 25px
+                rgba(0,0,0,0.06);
+
+            overflow: hidden;
+        }
+
+        .table-header {
+            padding: 22px;
+
+            border-bottom:
+                1px solid #e2e8f0;
+
+            display: flex;
+
+            justify-content: space-between;
+
+            align-items: center;
+        }
+
+        .table-header h2 {
+            font-size: 19px;
+
+            color: #172033;
+        }
+
+        .search-box {
+            padding: 10px 14px;
+
+            border:
+                1px solid #cbd5e1;
+
+            border-radius: 8px;
+
+            outline: none;
+
+            width: 240px;
+        }
+
+        .search-box:focus {
+            border-color: #2563eb;
+        }
+
+        table {
+            width: 100%;
+
+            border-collapse: collapse;
+        }
+
+        th {
+            background: #f8fafc;
+
+            color: #475569;
+
+            font-size: 13px;
+
+            text-align: left;
+
+            padding: 15px 18px;
+
+            border-bottom:
+                1px solid #e2e8f0;
+        }
+
+        td {
+            padding: 15px 18px;
+
+            border-bottom:
+                1px solid #f1f5f9;
+
+            font-size: 14px;
+
+            vertical-align: middle;
+        }
+
+        tr:hover {
+            background: #f8fafc;
+        }
+
+        /* =========================
+           STATUS
+        ========================= */
+
+        .status {
+            display: inline-block;
+
+            padding: 6px 11px;
+
+            border-radius: 20px;
+
+            font-size: 11px;
+
+            font-weight: 600;
+        }
+
+        .status-ACTIVE {
+            background: #dcfce7;
+            color: #15803d;
+        }
+
+        .status-DRAFT {
+            background: #fef3c7;
+            color: #b45309;
+        }
+
+        .status-EXPIRED {
+            background: #fee2e2;
+            color: #b91c1c;
+        }
+
+        .status-TERMINATED {
+            background: #e2e8f0;
+            color: #475569;
+        }
+
+        /* =========================
+           ACTION BUTTONS
+        ========================= */
+
+        .action-btn {
+            border: none;
+
+            padding: 6px 10px;
+
+            border-radius: 4px;
+
+            cursor: pointer;
+
+            margin-right: 5px;
+
+            white-space: nowrap;
+
+            font-size: 12px;
+        }
+
+        td:last-child {
+            white-space: nowrap;
+        }
+
+        .view-btn {
+            background: #e0f2fe;
+            color: #0369a1;
+        }
+
+        .edit-btn {
+            background: #fef3c7;
+            color: #92400e;
+        }
+
+        .delete-btn {
+            background: #fee2e2;
+            color: #b91c1c;
+        }
+
+        .upload-btn {
+            background: #e0e7ff;
+            color: #4338ca;
+        }
+
+        .upload-btn:hover {
+            opacity: 0.8;
+        }
+
+        .action-btn:hover {
+            opacity: 0.8;
+        }
+
+        /* =========================
+           MODAL
+        ========================= */
+
+        .modal {
+            display: none;
+
+            position: fixed;
+
+            z-index: 1000;
+
+            left: 0;
+            top: 0;
+
+            width: 100%;
+            height: 100%;
+
+            background:
+                rgba(0,0,0,0.5);
+
+            align-items: center;
+
+            justify-content: center;
+        }
+
+        .modal-content {
+            background: white;
+            width: 560px;
+            max-width: 92%;
+            max-height: 90vh;
+            overflow-y: auto;
+            border-radius: 14px;
+            padding: 0;
+            box-shadow: 0 20px 50px rgba(0,0,0,0.2);
+        }
+
+        #contractModal .modal-content {
+            width: 560px;
+            max-width: 92%;
+            max-height: 90vh;
+            overflow-y: auto;
+            padding: 0;
+        }
+
+        .modal-content h2 {
+            margin-bottom: 20px;
+
+            color: #172033;
+        }
+
+        .form-group {
+            margin-bottom: 16px;
+        }
+
+        .form-group label {
+            display: block;
+
+            margin-bottom: 6px;
+
+            font-size: 13px;
+
+            color: #475569;
+
+            font-weight: 600;
+        }
+
+        .form-group input,
+        .form-group textarea,
+        .form-group select {
+            width: 100%;
+
+            padding: 10px 12px;
+
+            border:
+                1px solid #cbd5e1;
+
+            border-radius: 7px;
+
+            outline: none;
+
+            font-size: 14px;
+        }
+
+        .form-group textarea {
+            resize: vertical;
+
+            min-height: 90px;
+        }
+
+        .form-group input:focus,
+        .form-group textarea:focus,
+        .form-group select:focus {
+            border-color: #2563eb;
+        }
+
+        .modal-buttons {
+            display: flex;
+
+            justify-content: flex-end;
+
+            gap: 10px;
+
+            margin-top: 20px;
+        }
+
+        .cancel-btn {
+            background: #e2e8f0;
+
+            color: #334155;
+
+            border: none;
+
+            padding: 10px 18px;
+
+            border-radius: 7px;
+
+            cursor: pointer;
+        }
+
+        .save-btn {
+            background: #2563eb;
+
+            color: white;
+
+            border: none;
+
+            padding: 10px 18px;
+
+            border-radius: 7px;
+
+            cursor: pointer;
+        }
+
+        /* =========================
+          PROFESSIONAL VIEW DETAILS
+        ========================= */
+
+        #viewModal .modal-content {
+            width: 620px;
+            max-width: 92%;
+            padding: 0;
+            overflow: hidden;
+        }
+
+        #viewModal .view-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+
+            padding: 20px 24px;
+
+            background: linear-gradient(
+                135deg,
+                #1e3a8a,
+                #2563eb
+            );
+
+            color: white;
+        }
+
+        #viewModal .view-header h2 {
+            margin: 0;
+            color: white;
+            font-size: 20px;
+        }
+
+        .view-close {
+            width: 32px;
+            height: 32px;
+
+            border: none;
+            border-radius: 50%;
+
+            background: rgba(255,255,255,0.15);
+
+            color: white;
+
+            font-size: 22px;
+            line-height: 1;
+
+            cursor: pointer;
+
+            transition: 0.2s;
+        }
+
+        .view-close:hover {
+            background: rgba(255,255,255,0.28);
+        }
+
+        .view-body {
+            padding: 24px;
+        }
+
+        .details-grid {
+            display: grid;
+
+            grid-template-columns:
+                repeat(2, 1fr);
+
+            gap: 16px;
+        }
+
+        .detail-item {
+            background: #f8fafc;
+
+            border: 1px solid #e2e8f0;
+
+            border-radius: 10px;
+
+            padding: 14px 16px;
+        }
+
+        .detail-label {
+            display: block;
+
+            color: #64748b;
+
+            font-size: 12px;
+
+            font-weight: 600;
+
+            margin-bottom: 6px;
+
+            text-transform: uppercase;
+
+            letter-spacing: 0.4px;
+        }
+
+        .detail-value {
+            color: #172033;
+
+            font-size: 14px;
+
+            font-weight: 500;
+
+            word-break: break-word;
+        }
+
+        .detail-description {
+            grid-column: 1 / -1;
+            width: 100%;
+        }
+
+        .description-content {
+    width: 100%;
+    background: white;
+    border: 1px solid #e2e8f0;
+    border-radius: 8px;
+    padding: 14px;
+    line-height: 1.6;
+    color: #334155;
+    max-height: 160px;
+    overflow-y: auto;
+    white-space: pre-wrap;
+    word-break: break-word;
+    text-align: left !important;
+    vertical-align: top !important;
+    display: block;
+    }
+
+        .view-status {
+            display: inline-block;
+
+            padding: 5px 11px;
+
+            border-radius: 20px;
+
+            font-size: 11px;
+
+            font-weight: 700;
+        }
+
+        #viewModal .modal-buttons {
+            padding: 0 24px 22px;
+
+            margin-top: 0;
+        }
+
+        #viewModal .cancel-btn {
+            padding: 10px 22px;
+
+            font-weight: 600;
+        }
+
+        @media(max-width: 600px) {
+
+            .details-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .detail-description {
+                grid-column: auto;
+            }
+
+        }
+
+        /* =========================
+           RESPONSIVE
+        ========================= */
+
+        @media(max-width: 1100px) {
+
+            .stats {
+                grid-template-columns:
+                    repeat(2, 1fr);
+            }
+
+            .content {
+                padding: 25px;
+            }
+        }
+
+        @media(max-width: 768px) {
+
+            .sidebar {
+                width: 75px;
+            }
+
+            .sidebar span,
+            .menu-title {
+                display: none;
+            }
+
+            .sidebar a {
+                justify-content: center;
+            }
+
+            .page-header {
+                flex-direction: column;
+
+                align-items: flex-start;
+
+                gap: 15px;
+            }
+
+            .table-card {
+                overflow-x: auto;
+            }
+
+            table {
+                min-width: 900px;
+            }
+        }
+
+        @media(max-width: 500px) {
+
+            .stats {
+                grid-template-columns: 1fr;
+            }
+
+            .content {
+                padding: 18px;
+            }
+
+            .profile-info {
+                display: none;
+            }
+        }
+
+        /* Contract Description */
+        #viewModal .description-content {
+            display: block !important;
+            width: 100% !important;
+            text-align: left !important;
+            vertical-align: top !important;
+            padding: 14px !important;
+            line-height: 1.6;
+            white-space: pre-wrap;
+            word-break: break-word;
+            overflow-y: auto !important;
+        }
+
+       /* =========================
+   PROFESSIONAL CONTRACT EDIT FIELDS
+========================= */
+
+#contractModal .form-group {
+    margin: 0 24px 16px;
+    padding: 14px 16px 16px;
+
+    background: #f8fafc;
+    border: 1px solid #e2e8f0;
+    border-radius: 10px;
+}
+
+/* First field spacing below header */
+#contractModal .form-group:first-of-type {
+    margin-top: 24px;
+}
+
+/* Field labels */
+#contractModal .form-group label {
+    display: block;
+    margin-bottom: 8px;
+
+    color: #64748b;
+    font-size: 12px;
+    font-weight: 700;
+
+    text-transform: uppercase;
+    letter-spacing: 0.4px;
+}
+
+/* Editable fields */
+#contractModal .form-group input,
+#contractModal .form-group textarea,
+#contractModal .form-group select {
+    width: 100%;
+    box-sizing: border-box;
+
+    background: white;
+    border: 1px solid #dbe3ee;
+    border-radius: 8px;
+
+    padding: 11px 13px;
+
+    color: #334155;
+    font-size: 14px;
+
+    outline: none;
+    transition: all 0.2s ease;
+}
+
+/* Input / Select height */
+#contractModal .form-group input,
+#contractModal .form-group select {
+    height: 44px;
+}
+
+/* Description */
+#contractModal .form-group textarea {
+    min-height: 125px;
+    resize: vertical;
+    line-height: 1.6;
+}
+
+/* Hover */
+#contractModal .form-group input:hover,
+#contractModal .form-group textarea:hover,
+#contractModal .form-group select:hover {
+    border-color: #cbd5e1;
+}
+
+/* Focus */
+#contractModal .form-group input:focus,
+#contractModal .form-group textarea:focus,
+#contractModal .form-group select:focus {
+    border-color: #2563eb;
+
+    box-shadow:
+        0 0 0 3px rgba(37, 99, 235, 0.10);
+}
+
+/* Footer */
+#contractModal .modal-buttons {
+    display: flex;
+    justify-content: flex-end;
+    gap: 10px;
+
+    padding: 8px 24px 24px;
+    margin-top: 4px;
+
+    border-top: 1px solid #f1f5f9;
+}
+
+/* Buttons */
+#contractModal .cancel-btn,
+#contractModal .save-btn {
+    min-width: 90px;
+    padding: 10px 18px;
+
+    border-radius: 8px;
+    font-weight: 600;
+
+    cursor: pointer;
+    transition: 0.2s;
+}
+
+#contractModal .cancel-btn {
+    background: #f1f5f9;
+    color: #475569;
+    border: 1px solid #cbd5e1;
+}
+
+#contractModal .cancel-btn:hover {
+    background: #e2e8f0;
+}
+
+#contractModal .save-btn {
+    background: #2563eb;
+    color: white;
+    border: none;
+}
+
+#contractModal .save-btn:hover {
+    background: #1d4ed8;
+}
+
+/* =========================
+   FIX CONTRACT EDIT HEADER
+========================= */
+
+#contractModal .edit-modal-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+
+    padding: 20px 24px;
+
+    background: linear-gradient(
+        135deg,
+        #1e3a8a,
+        #2563eb
+    );
+
+    color: white;
+}
+
+/* Edit Contract title */
+
+#contractModal .edit-modal-header h2 {
+    margin: 0;
+    color: white;
+
+    font-size: 20px;
+    font-weight: 600;
+}
+
+/* Close button */
+
+#contractModal .edit-close {
+    width: 32px;
+    height: 32px;
+
+    border: none;
+    border-radius: 50%;
+
+    background: rgba(255,255,255,0.15);
+
+    color: white;
+
+    font-size: 22px;
+    line-height: 1;
+
+    cursor: pointer;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    transition: 0.2s;
+}
+
+#contractModal .edit-close:hover {
+    background: rgba(255,255,255,0.28);
+}
+
+/* Proper spacing after blue header */
+
+#contractModal .form-group:first-of-type {
+    margin-top: 24px;
+}
+
+/* Remove textarea resize corner */
+
+#contractModal .form-group textarea {
+    resize: none;
+}
+
+/* =========================
+   PROFESSIONAL UPLOAD MODAL
+========================= */
+
+#uploadModal .modal-content {
+    width: 520px;
+    max-width: 92%;
+    padding: 0;
+    overflow: hidden;
+}
+
+/* Header */
+
+#uploadModal .edit-modal-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+
+    padding: 20px 24px;
+
+    background: linear-gradient(
+        135deg,
+        #1e3a8a,
+        #2563eb
+    );
+
+    color: white;
+}
+
+#uploadModal .edit-modal-header h2 {
+    margin: 0;
+    color: white;
+
+    font-size: 20px;
+    font-weight: 600;
+}
+
+/* Close Button */
+
+#uploadModal .edit-close {
+    width: 32px;
+    height: 32px;
+
+    border: none;
+    border-radius: 50%;
+
+    background: rgba(255,255,255,0.15);
+
+    color: white;
+
+    font-size: 22px;
+    line-height: 1;
+
+    cursor: pointer;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    transition: 0.2s;
+}
+
+#uploadModal .edit-close:hover {
+    background: rgba(255,255,255,0.28);
+}
+
+/* File Field */
+
+#uploadModal .form-group {
+    margin: 24px 24px 16px;
+    padding: 14px 16px 16px;
+
+    background: #f8fafc;
+
+    border: 1px solid #e2e8f0;
+
+    border-radius: 10px;
+}
+
+#uploadModal .form-group label {
+    display: block;
+
+    margin-bottom: 8px;
+
+    color: #64748b;
+
+    font-size: 12px;
+    font-weight: 700;
+
+    text-transform: uppercase;
+
+    letter-spacing: 0.4px;
+}
+
+#uploadModal .form-group input[type="file"] {
+    width: 100%;
+
+    box-sizing: border-box;
+
+    background: white;
+
+    border: 1px solid #dbe3ee;
+
+    border-radius: 8px;
+
+    padding: 10px 12px;
+
+    color: #334155;
+
+    font-size: 14px;
+
+    cursor: pointer;
+}
+
+#uploadModal .form-group input[type="file"]:hover {
+    border-color: #cbd5e1;
+}
+
+/* Footer */
+
+#uploadModal .modal-buttons {
+    display: flex;
+
+    justify-content: flex-end;
+
+    gap: 10px;
+
+    padding: 8px 24px 24px;
+
+    margin-top: 4px;
+
+    border-top: 1px solid #f1f5f9;
+}
+
+/* Buttons */
+
+#uploadModal .cancel-btn,
+#uploadModal .save-btn {
+    min-width: 90px;
+
+    padding: 10px 18px;
+
+    border-radius: 8px;
+
+    font-weight: 600;
+
+    cursor: pointer;
+
+    transition: 0.2s;
+}
+
+#uploadModal .cancel-btn {
+    background: #f1f5f9;
+
+    color: #475569;
+
+    border: 1px solid #cbd5e1;
+}
+
+#uploadModal .cancel-btn:hover {
+    background: #e2e8f0;
+}
+
+#uploadModal .save-btn {
+    background: #2563eb;
+
+    color: white;
+
+    border: none;
+}
+
+#uploadModal .save-btn:hover {
+    background: #1d4ed8;
+}
+
+/* ===============================
+   PROFESSIONAL DOCUMENTS MODAL
+   =============================== */
+
+#documentsModal .modal-content {
+    width: 700px;
+    max-width: 92%;
+    padding: 0;
+    overflow: hidden;
+}
+
+#documentsModal .edit-modal-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 20px 24px;
+    background: linear-gradient(135deg, #1e3a8a, #2563eb);
+    color: white;
+}
+
+#documentsModal .edit-modal-header h2 {
+    margin: 0;
+    color: white;
+    font-size: 20px;
+    font-weight: 600;
+}
+
+#documentsModal .edit-close {
+    width: 32px;
+    height: 32px;
+    min-width: 32px;
+    border: none;
+    border-radius: 50%;
+    background: rgba(255, 255, 255, 0.15);
+    color: white;
+    font-size: 22px;
+    line-height: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: 0.2s;
+}
+
+#documentsModal .edit-close:hover {
+    background: rgba(255, 255, 255, 0.28);
+}
+
+/* Professional Document Card */
+
+#documentsModal .document-card {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 16px;
+    padding: 16px 18px;
+    background: #ffffff;
+    border: 1px solid #e2e8f0;
+    border-radius: 10px;
+    transition: all 0.2s ease;
+}
+
+#documentsModal .document-card:hover {
+    border-color: #cbd5e1;
+    box-shadow: 0 4px 12px rgba(15, 23, 42, 0.06);
+}
+
+#documentsModal .document-info {
+    display: flex;
+    align-items: center;
+    gap: 13px;
+    min-width: 0;
+}
+
+#documentsModal .document-icon {
+    width: 44px;
+    height: 44px;
+    min-width: 44px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: #eff6ff;
+    border-radius: 9px;
+    font-size: 21px;
+}
+
+#documentsModal .document-name {
+    font-size: 14px;
+    font-weight: 600;
+    color: #172033;
+    word-break: break-word;
+}
+
+#documentsModal .document-type {
+    margin-top: 4px;
+    font-size: 12px;
+    color: #64748b;
+}
+
+#documentsModal .document-right {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    white-space: nowrap;
+}
+
+#documentsModal .document-date {
+    font-size: 12px;
+    color: #64748b;
+}
+
+#documentsModal .view-document-btn {
+    border: none;
+    padding: 8px 12px;
+    border-radius: 7px;
+    background: #dff1ff;
+    color: #0d6efd;
+    font-size: 13px;
+    font-weight: 600;
+    cursor: pointer;
+    white-space: nowrap;
+    transition: 0.2s;
+}
+
+#documentsModal .view-document-btn:hover {
+    background: #c8e7ff;
+}
+
+/* ===============================
+   PROFESSIONAL CLAUSES MODAL
+   =============================== */
+
+#clausesModal .clause-content {
+    background: white;
+    border: 1px solid #e2e8f0;
+    border-radius: 8px;
+    padding: 14px;
+
+    color: #334155;
+    font-size: 14px;
+    line-height: 1.6;
+
+    text-align: left !important;
+    white-space: pre-wrap;
+    word-break: break-word;
+
+    display: block;
+    width: 100%;
+    box-sizing: border-box;
+}
+
+/* Header */
+
+#clausesModal .edit-modal-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+
+    padding: 20px 24px;
+
+    background: linear-gradient(
+        135deg,
+        #1e3a8a,
+        #2563eb
+    );
+
+    color: white;
+}
+
+#clausesModal .edit-modal-header h2 {
+    margin: 0;
+
+    color: white;
+
+    font-size: 20px;
+    font-weight: 600;
+}
+
+/* Close Button */
+
+#clausesModal .edit-close {
+    width: 32px;
+    height: 32px;
+
+    min-width: 32px;
+
+    border: none;
+    border-radius: 50%;
+
+    background: rgba(255,255,255,0.15);
+
+    color: white;
+
+    font-size: 22px;
+    line-height: 1;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    cursor: pointer;
+
+    transition: 0.2s;
+}
+
+#clausesModal .edit-close:hover {
+    background: rgba(255,255,255,0.28);
+}
+
+/* Clause List Area */
+
+#clausesModal #clausesList {
+    max-height: 52vh;
+    overflow-y: auto;
+}
+
+/* Clause Card */
+
+#clausesModal .clause-card {
+    padding: 17px 18px;
+
+    background: #ffffff;
+
+    border: 1px solid #e2e8f0;
+
+    border-radius: 10px;
+
+    transition: all 0.2s ease;
+}
+
+#clausesModal .clause-card:hover {
+    border-color: #cbd5e1;
+
+    box-shadow:
+        0 4px 12px
+        rgba(15,23,42,0.06);
+}
+
+/* Clause Header */
+
+#clausesModal .clause-header {
+    display: flex;
+
+    align-items: center;
+
+    gap: 10px;
+
+    margin-bottom: 10px;
+}
+
+/* Clause Number */
+
+#clausesModal .clause-number {
+    color: #2563eb;
+
+    font-size: 13px;
+
+    font-weight: 700;
+
+    white-space: nowrap;
+}
+
+/* Clause Title */
+
+#clausesModal .clause-title {
+    color: #172033;
+
+    font-size: 15px;
+
+    font-weight: 600;
+
+    word-break: break-word;
+}
+
+/* Clause Content */
+
+#clausesModal .clause-content {
+    width: 100%;
+
+    background: #f8fafc;
+
+    border: 1px solid #e2e8f0;
+
+    border-radius: 8px;
+
+    padding: 14px;
+
+    color: #334155;
+
+    font-size: 14px;
+
+    line-height: 1.6;
+
+    white-space: pre-wrap;
+
+    word-break: break-word;
+
+    text-align: left;
+}
+
+/* Footer */
+
+#clausesModal .modal-buttons {
+    display: flex;
+
+    justify-content: flex-end;
+
+    padding: 12px 24px 22px;
+
+    margin-top: 0;
+
+    border-top: 1px solid #f1f5f9;
+}
+
+#clausesModal .cancel-btn {
+    min-width: 90px;
+
+    padding: 10px 20px;
+
+    border-radius: 8px;
+
+    background: #f1f5f9;
+
+    color: #475569;
+
+    border: 1px solid #cbd5e1;
+
+    font-weight: 600;
+
+    cursor: pointer;
+
+    transition: 0.2s;
+}
+
+#clausesModal .cancel-btn:hover {
+    background: #e2e8f0;
+}
+
+#clausesModal .clause-actions {
+    display: flex;
+    justify-content: flex-end;
+    gap: 8px;
+    margin-top: 12px;
+}
+
+#clausesModal .clause-actions .action-btn {
+    margin-right: 0;
+}
+
+/* =========================
+   CLAUSE CREATE / EDIT MODAL
+   ========================= */
+
+#clauseCreateModal .modal-content {
+    width: 630px;
+    max-width: 92%;
+    padding: 0;
+    overflow: hidden;
+    border-radius: 14px;
+}
+
+#clauseCreateModal .edit-modal-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 20px 24px;
+    background: linear-gradient(135deg, #1e3a8a, #2563eb);
+    color: white;
+}
+
+#clauseCreateModal .edit-modal-header h2 {
+    margin: 0;
+    color: white;
+    font-size: 20px;
+    font-weight: 600;
+}
+
+#clauseCreateModal .edit-close {
+    width: 32px;
+    height: 32px;
+    min-width: 32px;
+    border: none;
+    border-radius: 50%;
+    background: rgba(255,255,255,0.15);
+    color: white;
+    font-size: 22px;
+    line-height: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: 0.2s;
+}
+
+#clauseCreateModal .edit-close:hover {
+    background: rgba(255,255,255,0.28);
+}
+
+#clauseCreateModal .form-group {
+    margin: 0 24px 16px;
+    padding: 14px 16px 16px;
+    background: #f8fafc;
+    border: 1px solid #e2e8f0;
+    border-radius: 10px;
+}
+
+#clauseCreateModal .form-group:first-of-type {
+    margin-top: 24px;
+}
+
+#clauseCreateModal .form-group label {
+    display: block;
+    margin-bottom: 8px;
+    color: #64748b;
+    font-size: 12px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.4px;
+}
+
+#clauseCreateModal .form-group input,
+#clauseCreateModal .form-group textarea {
+    width: 100%;
+    box-sizing: border-box;
+    background: white;
+    border: 1px solid #dbe3ee;
+    border-radius: 8px;
+    padding: 11px 13px;
+    color: #334155;
+    font-size: 14px;
+    outline: none;
+    transition: all 0.2s ease;
+}
+
+#clauseCreateModal .form-group input {
+    height: 44px;
+}
+
+#clauseCreateModal .form-group textarea {
+    min-height: 140px;
+    resize: vertical;
+    line-height: 1.6;
+}
+
+#clauseCreateModal .form-group input:focus,
+#clauseCreateModal .form-group textarea:focus {
+    border-color: #2563eb;
+    box-shadow: 0 0 0 3px rgba(37,99,235,0.10);
+}
+
+#clauseCreateModal .modal-buttons {
+    display: flex;
+    justify-content: flex-end;
+    gap: 10px;
+    padding: 8px 24px 24px;
+    margin-top: 4px;
+    border-top: 1px solid #f1f5f9;
+}
+
+#clauseCreateModal .cancel-btn,
+#clauseCreateModal .save-btn {
+    min-width: 100px;
+    padding: 10px 18px;
+    border-radius: 8px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: 0.2s;
+}
+
+#clauseCreateModal .cancel-btn {
+    background: #f1f5f9;
+    color: #475569;
+    border: 1px solid #cbd5e1;
+}
+
+#clauseCreateModal .cancel-btn:hover {
+    background: #e2e8f0;
+}
+
+#clauseCreateModal .save-btn {
+    background: #2563eb;
+    color: white;
+    border: none;
+}
+
+#clauseCreateModal .save-btn:hover {
+    background: #1d4ed8;
+}
+
+#clauseCreateModal .form-group input,
+#clauseCreateModal .form-group textarea {
+    text-align: left !important;
+}
+
+#clauseCreateModal .form-group input::placeholder,
+#clauseCreateModal .form-group textarea::placeholder {
+    text-align: left;
+}
+
+#clausesModal .clause-content {
+    text-align: left !important;
+    white-space: pre-wrap;
+    word-break: break-word;
+}
+
+
+
+/* Remove textarea resize corner */
+#clauseCreateModal .form-group textarea {
+    resize: none !important;
+}
+
+/* Documents - Light Blue */
+.document-btn {
+    background: #dff1ff;
+    color: #0d6efd;
+}
+
+.document-btn:hover {
+    background: #c8e7ff;
+}
+
+/* Clauses - Light Purple */
+.clause-btn {
+    background: #eee5ff;
+    color: #7c3aed;
+}
+
+.clause-btn:hover {
+    background: #e3d4ff;
+}
+    </style>
+
+</head>
+
+
+<body>
+
+
+<!-- ================= NAVBAR ================= -->
+
+<div class="navbar">
+
+    <div class="brand">
+
+        <div class="brand-icon">
+            ⚖️
+        </div>
+
+        <h2>
+            Legal Contract Management
+        </h2>
+
+    </div>
+
+
+    <div class="profile-section">
+
+        <div class="profile-info">
+
+            <h4 id="topUsername">
+                User
+            </h4>
+
+            <p id="topRole">
+                USER
+            </p>
+
+        </div>
+
+
+        <button
+                class="logout-btn"
+                onclick="logout()">
+
+            Logout
+
+        </button>
+
+    </div>
+
+</div>
+
+
+<!-- ================= MAIN LAYOUT ================= -->
+
+<div class="layout">
+
+
+    <!-- ================= SIDEBAR ================= -->
+
+    <div class="sidebar">
+
+        <div class="menu-title">
+            CONTRACT MENU
+        </div>
+
+
+        <a href="/Dashboard.html">
+
+            <span class="sidebar-icon">
+                🏠
+            </span>
+
+            <span>
+                Dashboard
+            </span>
+
+        </a>
+
+
+        <a
+                href="/ContractDashboard.html"
+                class="active">
+
+            <span class="sidebar-icon">
+                📄
+            </span>
+
+            <span>
+                Contracts
+            </span>
+
+        </a>
+
+    </div>
+
+
+    <!-- ================= CONTENT ================= -->
+
+    <div class="content">
+
+
+        <!-- ================= PAGE HEADER ================= -->
+
+        <div class="page-header">
+
+            <div>
+
+                <h1>
+                    Contract Dashboard
+                </h1>
+
+                <p>
+                    Create, review and manage legal contracts.
+                </p>
+
+            </div>
+
+
+            <button
+                    class="add-btn"
+                    onclick="openCreateModal()">
+
+                + Create Contract
+
+            </button>
+
+        </div>
+
+
+        <!-- ================= STATISTICS ================= -->
+
+        <div class="stats">
+
+
+            <div class="stat-card">
+
+                <div class="stat-title">
+                    Total Contracts
+                </div>
+
+                <div
+                        class="stat-number"
+                        id="totalContracts">
+
+                    0
+
+                </div>
+
+            </div>
+
+
+            <div class="stat-card">
+
+                <div class="stat-title">
+                    Active Contracts
+                </div>
+
+                <div
+                        class="stat-number"
+                        id="activeContracts">
+
+                    0
+
+                </div>
+
+            </div>
+
+
+            <div class="stat-card">
+
+                <div class="stat-title">
+                    Draft Contracts
+                </div>
+
+                <div
+                        class="stat-number"
+                        id="draftContracts">
+
+                    0
+
+                </div>
+
+            </div>
+
+
+            <div class="stat-card">
+
+                <div class="stat-title">
+                    Expired / Terminated
+                </div>
+
+                <div
+                        class="stat-number"
+                        id="closedContracts">
+
+                    0
+
+                </div>
+
+            </div>
+
+        </div>
+
+
+        <!-- ================= TABLE ================= -->
+
+        <div class="table-card">
+
+
+            <div class="table-header">
+
+                <h2>
+                    All Contracts
+                </h2>
+
+                <div style="display: flex; gap: 10px; align-items: center;">
+
+                    <input
+                            type="text"
+                            id="searchInput"
+                            class="search-box"
+                            placeholder="Search contracts..."
+                            onkeyup="filterContracts()">
+
+                    <select
+                            id="statusFilter"
+                            class="search-box"
+                            onchange="filterContracts()">
+
+                        <option value="">All Status</option>
+
+                        <option value="DRAFT">
+                            Draft
+                        </option>
+
+                        <option value="ACTIVE">
+                            Active
+                        </option>
+
+                        <option value="EXPIRED">
+                            Expired
+                        </option>
+
+                        <option value="TERMINATED">
+                            Terminated
+                        </option>
+
+                    </select>
+
+                </div>
+
+            </div>
+
+
+            <table>
+
+                <thead>
+
+                <tr>
+
+                    <th>
+                        ID
+                    </th>
+
+                    <th>
+                        Title
+                    </th>
+
+                    <th>
+                        Description
+                    </th>
+
+                    <th>
+                        Status
+                    </th>
+
+                    <th>
+                        Created By
+                    </th>
+
+                    <th>
+                        Created At
+                    </th>
+
+                    <th>
+                        Actions
+                    </th>
+
+                </tr>
+
+                </thead>
+
+
+                <tbody id="contractTableBody">
+
+                </tbody>
+
+            </table>
+
+        </div>
+
+    </div>
+
+</div>
+
+
+<!-- ================= CREATE / EDIT MODAL ================= -->
+
+<div class="modal" id="contractModal">
+
+    <div class="modal-content">
+
+        <div class="edit-modal-header">
+            <h2 id="modalTitle">Create Contract</h2>
+
+            <button
+                    type="button"
+                    class="edit-close"
+                    onclick="closeModal()"
+                    title="Close">
+                ×
+            </button>
+        </div>
+
+        <div class="form-group">
+            <label>
+                Title
+            </label>
+
+            <input
+                    type="text"
+                    id="contractTitle"
+                    placeholder="Enter contract title">
+
+        </div>
+
+
+        <div class="form-group">
+
+            <label>
+                Description
+            </label>
+
+            <textarea
+                    id="contractDescription"
+                    placeholder="Enter contract description"></textarea>
+
+        </div>
+
+
+        <div class="form-group">
+
+            <label>
+                Status
+            </label>
+
+            <select id="contractStatus">
+
+                <option value="DRAFT">
+                    DRAFT
+                </option>
+
+                <option value="ACTIVE">
+                    ACTIVE
+                </option>
+
+                <option value="EXPIRED">
+                    EXPIRED
+                </option>
+
+                <option value="TERMINATED">
+                    TERMINATED
+                </option>
+
+            </select>
+
+        </div>
+
+
+        <div class="modal-buttons">
+
+            <button
+                    class="cancel-btn"
+                    onclick="closeModal()">
+
+                Cancel
+
+            </button>
+
+
+            <button
+                    class="save-btn"
+                    onclick="saveContract()">
+
+                Save Contract
+
+            </button>
+
+        </div>
+
+    </div>
+
+</div>
+
+
+<!-- ================= PROFESSIONAL VIEW MODAL ================= -->
+
+<div
+        class="modal"
+        id="viewModal">
+
+    <div class="modal-content">
+
+        <!-- VIEW HEADER -->
+
+        <div class="view-header">
+
+            <h2>
+                Contract Details
+            </h2>
+
+            <button
+                    class="view-close"
+                    onclick="closeViewModal()"
+                    title="Close">
+
+                ×
+
+            </button>
+
+        </div>
+
+
+        <!-- VIEW BODY -->
+
+        <div class="view-body">
+
+            <div
+                    class="details-grid"
+                    id="contractDetails">
+
+            </div>
+
+        </div>
+
+
+        <!-- FOOTER -->
+
+        <div class="modal-buttons">
+
+            <button
+                    class="cancel-btn"
+                    onclick="closeViewModal()">
+
+                Close
+
+            </button>
+
+        </div>
+
+    </div>
+
+</div>
+
+<!-- ================= JAVASCRIPT ================= -->
+
+<script>
+
+    /* =========================
+       LOGIN CHECK
+    ========================= */
+
+    document.addEventListener(
+        "DOMContentLoaded",
+        function () {
+
+            const username =
+                localStorage.getItem("username");
+
+            const role =
+                localStorage.getItem("role");
+
+            const justLoggedIn =
+                sessionStorage.getItem("justLoggedIn");
+
+
+            if (
+                !username ||
+                justLoggedIn !== "true"
+            ) {
+
+                sessionStorage.setItem(
+                    "redirectAfterLogin",
+                    "/ContractDashboard.html"
+                );
+
+                window.location.replace(
+                    "/Login.html"
+                );
+
+                return;
+
+            }
+
+
+            sessionStorage.removeItem(
+                "justLoggedIn"
+            );
+
+
+            document.getElementById(
+                "topUsername"
+            ).textContent =
+                username;
+
+
+            document.getElementById(
+                "topRole"
+            ).textContent =
+                role || "USER";
+
+
+            loadContracts();
+
+        }
+
+    );
+
+
+    /* =========================
+       VARIABLES
+    ========================= */
+
+    let contracts = [];
+
+    let editingId = null;
+
+    let currentContractId = null;
+
+
+    /* =========================
+       LOAD CONTRACTS
+    ========================= */
+
+    async function loadContracts() {
+
+        try {
+
+            const response =
+            await fetch(
+                "/api/contracts?username=" +
+                encodeURIComponent(
+                    localStorage.getItem("username")
+                )
+            );
+
+
+            if (!response.ok) {
+
+                throw new Error(
+                    "Failed to load contracts"
+                );
+
+            }
+
+
+            contracts =
+                await response.json();
+
+
+            displayContracts(
+                contracts
+            );
+
+
+            updateStatistics(
+                contracts
+            );
+
+        }
+        catch (error) {
+
+            console.error(
+                "Contract loading error:",
+                error
+            );
+
+            alert(
+                "Unable to load contracts."
+            );
+
+        }
+
+    }
+
+
+    /* =========================
+       DISPLAY CONTRACTS
+    ========================= */
+
+    function displayContracts(
+        data
+    ) {
+
+        const tbody =
+            document.getElementById(
+                "contractTableBody"
+            );
+
+
+        tbody.innerHTML = "";
+
+
+        if (!data.length) {
+
+            tbody.innerHTML = `
+
+                <tr>
+
+                    <td
+                        colspan="7"
+                        style="text-align:center;padding:30px;color:#94a3b8;">
+
+                        No contracts found.
+
+                    </td>
+
+                </tr>
+
+            `;
+
+            return;
+
+        }
+
+
+        const role =
+            localStorage.getItem("role");
+
+
+        data.forEach(
+            contract => {
+
+                const status =
+                    String(
+                        contract.status || ""
+                    ).toUpperCase();
+
+
+                const createdBy =
+                    contract.createdBy?.username ||
+                    contract.createdBy?.name ||
+                    contract.createdBy ||
+                    "-";
+
+
+                const createdAt =
+                    contract.createdAt
+                    ? formatDate(
+                        contract.createdAt
+                    )
+                    : "-";
+
+
+                const row =
+                    document.createElement("tr");
+
+
+                row.innerHTML = `
+
+                    <td>
+                        ${contract.id}
+                    </td>
+
+                    <td>
+                        <strong>
+                            ${escapeHtml(
+                                contract.title || "-"
+                            )}
+                        </strong>
+                    </td>
+
+                    <td>
+                        ${escapeHtml(
+                            contract.description || "-"
+                        )}
+                    </td>
+
+                    <td>
+
+                        <span
+                            class="status status-${status}">
+
+                            ${escapeHtml(
+                                status || "N/A"
+                            )}
+
+                        </span>
+
+                    </td>
+
+                    <td>
+                        ${escapeHtml(
+                            String(createdBy)
+                        )}
+                    </td>
+
+                    <td>
+                        ${createdAt}
+                    </td>
+
+                    <td>
+
+                        <button
+                            class="action-btn view-btn"
+                            onclick="viewContract(${contract.id})">
+
+                            View
+
+                        </button>
+
+
+                        <button
+                            class="action-btn edit-btn"
+                            onclick="editContract(${contract.id})">
+
+                            Edit
+
+                        </button>
+
+
+                        ${
+                            role === "ContractManager"
+                            ? `
+
+                                <button
+                                    class="action-btn delete-btn"
+                                    onclick="deleteContract(${contract.id})">
+
+                                    Delete
+
+                                </button>
+
+                              `
+                            : ""
+                        }
+
+                        <button
+                            class="action-btn upload-btn"
+                            onclick="openUploadModal(${contract.id})">
+
+                            Upload Document
+
+                        </button>
+
+                        <button
+                            class="action-btn document-btn"
+                            onclick="viewDocuments(${contract.id})">
+
+                            Documents
+
+                        </button>
+
+                        <button
+                            class="action-btn clause-btn"
+                            onclick="viewClauses(${contract.id})">
+
+                            Clauses
+
+                        </button>
+
+                    </td>
+
+                `;
+
+                tbody.appendChild(
+                    row
+                );
+
+            }
+        );
+
+    }
+
+
+    /* =========================
+       STATISTICS
+    ========================= */
+
+    function updateStatistics(
+        data
+    ) {
+
+        const total =
+            data.length;
+
+
+        const active =
+            data.filter(
+                c =>
+                    String(c.status)
+                        .toUpperCase()
+                    === "ACTIVE"
+            ).length;
+
+
+        const draft =
+            data.filter(
+                c =>
+                    String(c.status)
+                        .toUpperCase()
+                    === "DRAFT"
+            ).length;
+
+
+        const closed =
+            data.filter(
+                c => {
+
+                    const status =
+                        String(c.status)
+                            .toUpperCase();
+
+                    return (
+                        status === "EXPIRED" ||
+                        status === "TERMINATED"
+                    );
+
+                }
+            ).length;
+
+
+        document.getElementById(
+            "totalContracts"
+        ).textContent =
+            total;
+
+
+        document.getElementById(
+            "activeContracts"
+        ).textContent =
+            active;
+
+
+        document.getElementById(
+            "draftContracts"
+        ).textContent =
+            draft;
+
+
+        document.getElementById(
+            "closedContracts"
+        ).textContent =
+            closed;
+
+    }
+
+
+    /* =========================
+       CREATE MODAL
+    ========================= */
+
+    function openCreateModal() {
+
+        editingId = null;
+
+
+        document.getElementById(
+            "modalTitle"
+        ).textContent =
+            "Create Contract";
+
+
+        document.getElementById(
+            "contractTitle"
+        ).value =
+            "";
+
+
+        document.getElementById(
+            "contractDescription"
+        ).value =
+            "";
+
+
+        document.getElementById(
+            "contractStatus"
+        ).value =
+            "DRAFT";
+
+
+        document.getElementById(
+            "contractModal"
+        ).style.display =
+            "flex";
+
+    }
+
+
+    /* =========================
+       EDIT CONTRACT
+    ========================= */
+
+    function editContract(
+        id
+    ) {
+
+        const contract =
+            contracts.find(
+                c =>
+                    Number(c.id) ===
+                    Number(id)
+            );
+
+
+        if (!contract) {
+
+            alert(
+                "Contract not found."
+            );
+
+            return;
+
+        }
+
+
+        editingId =
+            contract.id;
+
+
+        document.getElementById(
+            "modalTitle"
+        ).textContent =
+            "Edit Contract";
+
+
+        document.getElementById(
+            "contractTitle"
+        ).value =
+            contract.title || "";
+
+
+        document.getElementById(
+            "contractDescription"
+        ).value =
+            contract.description || "";
+
+
+        document.getElementById(
+            "contractStatus"
+        ).value =
+            contract.status || "DRAFT";
+
+
+        document.getElementById(
+            "contractModal"
+        ).style.display =
+            "flex";
+
+    }
+
+
+    /* =========================
+       SAVE CONTRACT
+    ========================= */
+
+    async function saveContract() {
+
+        const title =
+            document.getElementById(
+                "contractTitle"
+            ).value.trim();
+
+
+        const description =
+            document.getElementById(
+                "contractDescription"
+            ).value.trim();
+
+
+        const status =
+            document.getElementById(
+                "contractStatus"
+            ).value;
+
+
+        if (!title) {
+
+            alert(
+                "Please enter contract title."
+            );
+
+            return;
+
+        }
+
+
+        const username =
+            localStorage.getItem(
+                "username"
+            );
+
+
+        const contractData = {
+
+            title: title,
+
+            description: description,
+
+            status: status,
+
+            createdBy: {
+                username: username
+            }
+
+        };
+
+
+        try {
+
+            let response;
+
+
+            if (editingId) {
+
+                response =
+                    await fetch(
+                        `/api/contracts/${editingId}`,
+                        {
+                            method: "PUT",
+
+                            headers: {
+                                "Content-Type":
+                                    "application/json"
+                            },
+
+                            body:
+                                JSON.stringify(
+                                    contractData
+                                )
+                        }
+                    );
+
+            }
+            else {
+
+                response =
+                    await fetch(
+                        "/api/contracts",
+                        {
+                            method: "POST",
+
+                            headers: {
+                                "Content-Type":
+                                    "application/json"
+                            },
+
+                            body:
+                                JSON.stringify(
+                                    contractData
+                                )
+                        }
+                    );
+
+            }
+
+
+            if (!response.ok) {
+
+                const errorText =
+                    await response.text();
+
+                console.error(
+                    errorText
+                );
+
+                throw new Error(
+                    "Failed to save contract"
+                );
+
+            }
+
+
+            closeModal();
+
+
+            await loadContracts();
+
+
+            alert(
+                editingId
+                    ? "Contract updated successfully."
+                    : "Contract created successfully."
+            );
+
+        }
+        catch (error) {
+
+            console.error(
+                "Save contract error:",
+                error
+            );
+
+            alert(
+                "Unable to save contract."
+            );
+
+        }
+
+    }
+
+
+   /* =========================
+   VIEW CONTRACT
+========================= */
+
+function viewContract(id) {
+
+    const contract =
+        contracts.find(
+            c =>
+                Number(c.id) ===
+                Number(id)
+        );
+
+
+    if (!contract) {
+
+        alert(
+            "Contract not found."
+        );
+
+        return;
+
+    }
+
+
+    const status =
+        String(
+            contract.status || ""
+        ).toUpperCase();
+
+
+    const createdBy =
+        contract.createdBy?.username ||
+        contract.createdBy?.name ||
+        contract.createdBy ||
+        "-";
+
+
+    let statusClass =
+        "status-" + status;
+
+
+    document.getElementById(
+        "contractDetails"
+    ).innerHTML = `
+
+        <!-- CONTRACT ID -->
+
+        <div class="detail-item">
+
+            <span class="detail-label">
+                Contract ID
+            </span>
+
+            <span class="detail-value">
+                #${contract.id}
+            </span>
+
+        </div>
+
+
+        <!-- STATUS -->
+
+        <div class="detail-item">
+
+            <span class="detail-label">
+                Status
+            </span>
+
+            <span
+                class="view-status ${statusClass}">
+
+                ${escapeHtml(
+                    status || "N/A"
+                )}
+
+            </span>
+
+        </div>
+
+
+        <!-- TITLE -->
+
+        <div class="detail-item">
+
+            <span class="detail-label">
+                Contract Title
+            </span>
+
+            <span class="detail-value">
+
+                ${escapeHtml(
+                    contract.title || "-"
+                )}
+
+            </span>
+
+        </div>
+
+
+        <!-- CREATED BY -->
+
+        <div class="detail-item">
+
+            <span class="detail-label">
+                Created By
+            </span>
+
+            <span class="detail-value">
+
+                ${escapeHtml(
+                    String(createdBy)
+                )}
+
+            </span>
+
+        </div>
+
+
+        <!-- CREATED AT -->
+
+        <div class="detail-item">
+
+            <span class="detail-label">
+                Created At
+            </span>
+
+            <span class="detail-value">
+
+                ${
+                    contract.createdAt
+                    ? formatDate(
+                        contract.createdAt
+                    )
+                    : "-"
+                }
+
+            </span>
+
+        </div>
+
+
+        <!-- DESCRIPTION -->
+
+        <div class="detail-item detail-description">
+
+            <span class="detail-label">
+                Description
+            </span>
+
+            <div class="description-content">${escapeHtml(contract.description || "No description available.")}</div>
+
+        </div>
+
+    `;
+
+
+    document.getElementById(
+        "viewModal"
+    ).style.display =
+        "flex";
+
+}
+
+    /* =========================
+       DELETE CONTRACT
+    ========================= */
+
+    async function deleteContract(
+        id
+    ) {
+
+        const role =
+            localStorage.getItem(
+                "role"
+            );
+
+
+        if (
+            role !== "ContractManager"
+        ) {
+
+            alert(
+                "Only ContractManager can delete contracts."
+            );
+
+            return;
+
+        }
+
+
+        const confirmed =
+            confirm(
+                "Are you sure you want to delete this contract?"
+            );
+
+
+        if (!confirmed) {
+            return;
+        }
+
+
+        try {
+
+            const response =
+                await fetch(
+                    `/api/contracts/${id}`,
+                    {
+                        method: "DELETE"
+                    }
+                );
+
+
+            if (!response.ok) {
+
+                throw new Error(
+                    "Delete failed"
+                );
+
+            }
+
+
+            await loadContracts();
+
+
+            alert(
+                "Contract deleted successfully."
+            );
+
+        }
+        catch (error) {
+
+            console.error(
+                "Delete contract error:",
+                error
+            );
+
+            alert(
+                "Unable to delete contract."
+            );
+
+        }
+
+    }
+
+
+    /* =========================
+       SEARCH
+    ========================= */
+
+    function filterContracts() {
+
+    const search =
+        document.getElementById("searchInput")
+            .value
+            .toLowerCase()
+            .trim();
+
+    const selectedStatus =
+        document.getElementById("statusFilter")
+            .value
+            .toUpperCase();
+
+    const filtered =
+        contracts.filter(contract => {
+
+            const title =
+                String(contract.title || "")
+                    .toLowerCase();
+
+            const description =
+                String(contract.description || "")
+                    .toLowerCase();
+
+            const status =
+                String(contract.status || "")
+                    .toUpperCase();
+
+            const matchesSearch =
+                title.includes(search) ||
+                description.includes(search) ||
+                status.toLowerCase().includes(search);
+
+            const matchesStatus =
+                selectedStatus === "" ||
+                status === selectedStatus;
+
+            return matchesSearch && matchesStatus;
+        });
+
+    displayContracts(filtered);
+}
+
+/* =========================
+   UPLOAD DOCUMENT MODAL
+========================= */
+
+function openUploadModal(contractId) {
+
+    document.getElementById(
+        "uploadContractId"
+    ).value = contractId;
+
+    document.getElementById(
+        "documentFile"
+    ).value = "";
+
+    document.getElementById(
+        "uploadModal"
+    ).style.display = "flex";
+}
+
+
+function closeUploadModal() {
+
+    document.getElementById(
+        "uploadModal"
+    ).style.display = "none";
+
+}
+
+/* =========================
+   VIEW CLAUSES
+========================= */
+
+async function viewClauses(contractId) {
+
+    currentContractId = contractId;
+
+    const username =
+        localStorage.getItem("username");
+
+    const clausesModal =
+        document.getElementById("clausesModal");
+
+    const clausesList =
+        document.getElementById("clausesList");
+
+    clausesList.innerHTML = `
+        <div style="
+            text-align:center;
+            padding:30px;
+            color:#64748b;
+        ">
+            Loading clauses...
+        </div>
+    `;
+
+    clausesModal.style.display = "flex";
+
+    try {
+
+        const response =
+            await fetch(
+                `/api/clauses/contract/${contractId}`
+            );
+
+        if (!response.ok) {
+
+            throw new Error(
+                "Failed to load clauses"
+            );
+
+        }
+
+        const clauses =
+            await response.json();
+
+        if (!clauses.length) {
+
+            clausesList.innerHTML = `
+                <div style="
+                    text-align:center;
+                    padding:30px;
+                    color:#94a3b8;
+                ">
+                    No clauses available for this contract.
+                </div>
+            `;
+
+            return;
+        }
+
+        clausesList.innerHTML =
+            clauses.map(clause => `
+
+                <div style="
+                    padding:16px;
+                    background:#f8fafc;
+                    border:1px solid #e2e8f0;
+                    border-radius:10px;
+                ">
+
+                    <div style="
+                        display:flex;
+                        align-items:center;
+                        gap:10px;
+                        margin-bottom:8px;
+                    ">
+
+                        <span style="
+                            font-size:13px;
+                            font-weight:700;
+                            color:#2563eb;
+                        ">
+                            Clause ${escapeHtml(clause.clauseNumber || "-")}
+                        </span>
+
+                        <span style="
+                            font-size:15px;
+                            font-weight:600;
+                            color:#172033;
+                        ">
+                            ${escapeHtml(clause.clauseTitle || "-")}
+                        </span>
+
+                    </div>
+
+                    <div
+                        class="clause-content"
+                        style="
+                            display:block !important;
+                            width:100% !important;
+                            box-sizing:border-box !important;
+                            text-align:left !important;
+                            text-align-last:left !important;
+                            margin-left:0 !important;
+                            margin-right:0 !important;
+                            padding:14px !important;
+                            white-space:pre-wrap !important;
+                            word-break:break-word !important;
+                        ">${escapeHtml(clause.content || "-")}</div>
+
+                    <div class="clause-actions">
+
+                        <button
+                            type="button"
+                            class="action-btn edit-btn"
+                            onclick="editClause(${clause.id})">
+                            ✏ Edit
+                        </button>
+
+                        <button
+                            type="button"
+                            class="action-btn delete-btn"
+                            onclick="deleteClause(${clause.id})">
+                            🗑 Delete
+                        </button>
+
+                    </div>
+
+                </div>
+
+            `).join("");
+
+    }
+    catch (error) {
+
+        console.error(
+            "Clause loading error:",
+            error
+        );
+
+        clausesList.innerHTML = `
+            <div style="
+                text-align:center;
+                padding:30px;
+                color:#dc2626;
+            ">
+                Unable to load clauses.
+            </div>
+        `;
+
+    }
+}
+
+/* =========================
+   CREATE CLAUSE
+========================= */
+
+function openClauseCreateModal() {
+
+    document.getElementById(
+        "clauseContractId"
+    ).value = currentContractId;
+
+    document.getElementById(
+        "clauseNumber"
+    ).value = "";
+
+    document.getElementById(
+        "clauseTitle"
+    ).value = "";
+
+    document.getElementById(
+        "clauseContent"
+    ).value = "";
+
+    document.getElementById(
+        "clauseCreateModal"
+    ).style.display = "flex";
+}
+
+
+function closeClauseCreateModal() {
+
+    document.getElementById(
+        "clauseCreateModal"
+    ).style.display = "none";
+}
+
+
+/* =========================
+   SAVE CLAUSE
+========================= */
+
+async function saveClause() {
+
+    const contractId =
+        document.getElementById(
+            "clauseContractId"
+        ).value;
+
+    const clauseNumber =
+        document.getElementById(
+            "clauseNumber"
+        ).value.trim();
+
+    const clauseTitle =
+        document.getElementById(
+            "clauseTitle"
+        ).value.trim();
+
+    const content =
+        document.getElementById(
+            "clauseContent"
+        ).value.trim();
+
+
+    if (!contractId) {
+
+        alert("Contract ID is missing.");
+        return;
+
+    }
+
+
+    if (!clauseNumber) {
+
+        alert("Please enter clause number.");
+        return;
+
+    }
+
+
+    if (!clauseTitle) {
+
+        alert("Please enter clause title.");
+        return;
+
+    }
+
+
+    if (!content) {
+
+        alert("Please enter clause content.");
+        return;
+
+    }
+
+
+    const clauseData = {
+
+        clauseNumber: clauseNumber,
+
+        clauseTitle: clauseTitle,
+
+        content: content,
+
+        contract: {
+            id: Number(contractId)
+        }
+
+    };
+
+
+    try {
+
+        const response =
+            await fetch(
+                "/api/clauses",
+                {
+                    method: "POST",
+
+                    headers: {
+                        "Content-Type":
+                            "application/json"
+                    },
+
+                    body:
+                        JSON.stringify(
+                            clauseData
+                        )
+                }
+            );
+
+
+        if (!response.ok) {
+
+            const errorText =
+                await response.text();
+
+            console.error(errorText);
+
+            throw new Error(
+                "Failed to create clause"
+            );
+
+        }
+
+
+        closeClauseCreateModal();
+
+
+        await viewClauses(
+            Number(contractId)
+        );
+
+
+        alert(
+            "Clause created successfully."
+        );
+
+    }
+    catch (error) {
+
+        console.error(
+            "Clause creation error:",
+            error
+        );
+
+        alert(
+            "Unable to create clause."
+        );
+
+    }
+
+}
+
+/* =========================
+   EDIT CLAUSE
+========================= */
+
+async function editClause(id) {
+
+    try {
+
+        const response =
+            await fetch(`/api/clauses/${id}`);
+
+        if (!response.ok) {
+            throw new Error("Failed to load clause");
+        }
+
+        const clause =
+            await response.json();
+
+        document.getElementById(
+            "clauseContractId"
+        ).value =
+            clause.contract?.id || currentContractId;
+
+        document.getElementById(
+            "clauseNumber"
+        ).value =
+            clause.clauseNumber || "";
+
+        document.getElementById(
+            "clauseTitle"
+        ).value =
+            clause.clauseTitle || "";
+
+        document.getElementById(
+            "clauseContent"
+        ).value =
+            clause.content || "";
+
+        document.getElementById(
+            "clauseCreateModal"
+        ).style.display = "flex";
+
+        document.querySelector(
+            "#clauseCreateModal .edit-modal-header h2"
+        ).textContent = "Edit Clause";
+
+        const saveButton =
+            document.querySelector(
+                "#clauseCreateModal .save-btn"
+            );
+
+        saveButton.textContent = "Update Clause";
+
+        saveButton.onclick = function () {
+            updateClause(id);
+        };
+
+    }
+    catch (error) {
+
+        console.error(
+            "Edit clause error:",
+            error
+        );
+
+        alert("Unable to load clause.");
+
+    }
+}
+
+async function updateClause(id) {
+
+    const clauseNumber =
+        document.getElementById("clauseNumber").value.trim();
+
+    const clauseTitle =
+        document.getElementById("clauseTitle").value.trim();
+
+    const content =
+        document.getElementById("clauseContent").value.trim();
+
+    const contractId =
+        document.getElementById("clauseContractId").value;
+
+    if (!clauseNumber || !clauseTitle || !content) {
+        alert("Please fill all clause fields.");
+        return;
+    }
+
+    try {
+
+        const response =
+            await fetch(`/api/clauses/${id}`, {
+                method: "PUT",
+                headers: {
+                    "Content-Type": "application/json"
+                },
+                body: JSON.stringify({
+                    clauseNumber: clauseNumber,
+                    clauseTitle: clauseTitle,
+                    content: content,
+                    contract: {
+                        id: Number(contractId)
+                    }
+                })
+            });
+
+        if (!response.ok) {
+            throw new Error("Failed to update clause");
+        }
+
+        closeClauseCreateModal();
+
+        await viewClauses(Number(contractId));
+
+        alert("Clause updated successfully.");
+
+    } catch (error) {
+
+        console.error(
+            "Update clause error:",
+            error
+        );
+
+        alert("Unable to update clause.");
+    }
+}
+
+async function deleteClause(id) {
+
+    const confirmed =
+        confirm("Are you sure you want to delete this clause?");
+
+    if (!confirmed) {
+        return;
+    }
+
+    try {
+
+        const response =
+            await fetch(`/api/clauses/${id}`, {
+                method: "DELETE"
+            });
+
+        if (!response.ok) {
+            throw new Error("Failed to delete clause");
+        }
+
+        alert("Clause deleted successfully.");
+
+        await viewClauses(currentContractId);
+
+    } catch (error) {
+
+        console.error(
+            "Delete clause error:",
+            error
+        );
+
+        alert("Unable to delete clause.");
+    }
+}
+
+
+/* =========================
+   CLOSE CLAUSES MODAL
+========================= */
+
+function closeClausesModal() {
+
+    document.getElementById(
+        "clausesModal"
+    ).style.display = "none";
+
+}
+
+/* =========================
+   VIEW DOCUMENTS
+========================= */
+
+async function viewDocuments(contractId) {
+
+    currentContractId = contractId;
+
+    const username =
+        localStorage.getItem("username");
+
+    const role =
+    localStorage.getItem("role");
+
+    const documentsList =
+        document.getElementById("documentsList");
+
+    documentsList.innerHTML = `
+        <div style="
+            text-align:center;
+            padding:30px;
+            color:#64748b;
+        ">
+            Loading documents...
+        </div>
+    `;
+
+    document.getElementById(
+        "documentsModal"
+    ).style.display = "flex";
+
+
+    try {
+
+        const response =
+            await fetch(`/api/documents/contract/${contractId}?username=${encodeURIComponent(username)}`)
+
+
+        if (!response.ok) {
+
+            throw new Error(
+                "Failed to load documents"
+            );
+
+        }
+
+
+        const documents =
+            await response.json();
+
+
+        documentsList.innerHTML = documents.map(doc => `
+            <div>
+                ${doc.fileName}
+            </div>
+        `).join("");
+
+    if (!documents.length) {
+
+    documentsList.innerHTML = `
+        <div style="
+            text-align:center;
+            padding:30px;
+            color:#94a3b8;
+        ">
+            No documents uploaded for this contract.
+        </div>
+    `;
+
+    return;
+}
+
+
+documentsList.innerHTML = documents.map(doc => `
+
+    <div class="document-card">
+
+        <div class="document-info">
+
+            <div class="document-icon">
+                📄
+            </div>
+
+            <div>
+
+                <div class="document-name">
+                    ${escapeHtml(doc.fileName || "Unnamed Document")}
+                </div>
+
+                <div class="document-type">
+                    ${escapeHtml(doc.fileType || "Document")}
+                </div>
+
+            </div>
+
+        </div>
+
+
+        <div class="document-right">
+
+            <div class="document-date">
+                ${doc.uploadedAt ? formatDate(doc.uploadedAt) : "-"}
+            </div>
+
+
+            <button
+                type="button"
+                class="view-document-btn"
+                onclick="viewDocument(${doc.id})">
+
+                View
+
+            </button>
+
+            <button
+                type="button"
+                class="view-document-btn"
+                onclick="downloadDocument(${doc.id})">
+
+                Download
+
+            </button>
+
+
+            <button
+                type="button"
+                class="action-btn delete-btn"
+                onclick="deleteDocument(${doc.id})">
+
+                Delete
+
+            </button>
+
+        </div>
+
+    </div>
+
+`).join("");
+}
+    catch (error) {
+
+        console.error(
+            "Document loading error:",
+            error
+        );
+
+        documentsList.innerHTML = `
+            <div style="
+                text-align:center;
+                padding:30px;
+                color:#dc2626;
+            ">
+                Unable to load documents.
+            </div>
+        `;
+
+    }
+
+}
+
+async function viewDocument(documentId) {
+
+    const username =
+        localStorage.getItem("username");
+
+    if (!username) {
+        alert("User not logged in");
+        return;
+    }
+
+    const url =
+        `/api/documents/view/${documentId}?username=${encodeURIComponent(username)}`;
+
+    window.open(url, "_blank");
+}
+
+async function downloadDocument(documentId) {
+
+    const username =
+        localStorage.getItem("username");
+
+    if (!username) {
+        alert("User not logged in");
+        return;
+    }
+
+    const url =
+        `/api/documents/download/${documentId}?username=${encodeURIComponent(username)}`;
+
+    window.open(url, "_blank");
+}
+
+async function deleteDocument(documentId) {
+
+    const username =
+        localStorage.getItem("username");
+
+    if (!username) {
+        alert("User not logged in");
+        return;
+    }
+
+    const confirmed =
+        confirm("Are you sure you want to delete this document?");
+
+    if (!confirmed) {
+        return;
+    }
+
+    try {
+
+        const response =
+            await fetch(
+                `/api/documents/${documentId}?username=${encodeURIComponent(username)}`,
+                {
+                    method: "DELETE"
+                }
+            );
+
+        if (!response.ok) {
+
+            const errorText =
+                await response.text();
+
+            throw new Error(
+                errorText || "Failed to delete document"
+            );
+        }
+
+        alert("Document deleted successfully.");
+
+        closeDocumentsModal();
+
+        viewDocuments(currentContractId);
+
+    } catch (error) {
+
+        console.error(
+            "Document delete error:",
+            error
+        );
+
+        alert(
+            error.message ||
+            "Unable to delete document."
+        );
+    }
+}
+
+
+/* =========================
+   CLOSE DOCUMENTS MODAL
+========================= */
+
+function closeDocumentsModal() {
+
+    document.getElementById(
+        "documentsModal"
+    ).style.display = "none";
+
+}
+
+    /* =========================
+       CLOSE MODALS
+    ========================= */
+
+    function closeModal() {
+
+        document.getElementById(
+            "contractModal"
+        ).style.display =
+            "none";
+
+    }
+
+
+    function closeViewModal() {
+
+        document.getElementById(
+            "viewModal"
+        ).style.display =
+            "none";
+
+    }
+
+    /* =========================
+   UPLOAD DOCUMENT
+========================= */
+
+async function uploadDocument() {
+
+    const contractId =
+        document.getElementById(
+            "uploadContractId"
+        ).value;
+
+    const fileInput =
+        document.getElementById(
+            "documentFile"
+        );
+
+    const file =
+        fileInput.files[0];
+
+    const username =
+        localStorage.getItem(
+            "username"
+        );
+
+
+    if (!file) {
+
+        alert(
+            "Please select a document."
+        );
+
+        return;
+    }
+
+
+    if (!contractId) {
+
+        alert(
+            "Contract ID is missing."
+        );
+
+        return;
+    }
+
+
+    const formData =
+        new FormData();
+
+    formData.append(
+        "file",
+        file
+    );
+
+    formData.append(
+        "contractId",
+        contractId
+    );
+
+    formData.append(
+        "username",
+        username
+    );
+
+
+    try {
+
+        const response =
+            await fetch(
+                "/api/documents/upload",
+                {
+                    method: "POST",
+                    body: formData
+                }
+            );
+
+
+        if (!response.ok) {
+
+            throw new Error(
+                "Upload failed"
+            );
+
+        }
+
+
+        closeUploadModal();
+
+
+        alert(
+            "Document uploaded successfully."
+        );
+
+
+    }
+    catch (error) {
+
+        console.error(
+            "Document upload error:",
+            error
+        );
+
+        alert(
+            "Unable to upload document."
+        );
+
+    }
+
+}
+
+
+    /* =========================
+       FORMAT DATE
+    ========================= */
+
+    function formatDate(
+        value
+    ) {
+
+        const date =
+            new Date(value);
+
+
+        if (
+            isNaN(
+                date.getTime()
+            )
+        ) {
+
+            return "-";
+
+        }
+
+
+        return date.toLocaleDateString(
+            "en-IN",
+            {
+                day: "2-digit",
+                month: "short",
+                year: "numeric"
+            }
+        );
+
+    }
+
+
+    /* =========================
+       ESCAPE HTML
+    ========================= */
+
+    function escapeHtml(
+        value
+    ) {
+
+        return String(
+            value ?? ""
+        )
+        .replace(
+            /&/g,
+            "&amp;"
+        )
+        .replace(
+            /</g,
+            "&lt;"
+        )
+        .replace(
+            />/g,
+            "&gt;"
+        )
+        .replace(
+            /"/g,
+            "&quot;"
+        )
+        .replace(
+            /'/g,
+            "&#039;"
+        );
+
+    }
+
+
+    /* =========================
+       LOGOUT
+    ========================= */
+
+    function logout() {
+
+        localStorage.removeItem(
+            "username"
+        );
+
+        localStorage.removeItem(
+            "role"
+        );
+
+        sessionStorage.removeItem(
+            "justLoggedIn"
+        );
+
+        sessionStorage.removeItem(
+            "forceLogin"
+        );
+
+        alert(
+            "You have been logged out successfully."
+        );
+
+        window.location.replace(
+            "/Login.html"
+        );
+
+    }
+
+</script>
+
+<!-- Upload Document Modal -->
+<div class="modal" id="uploadModal">
+    <div class="modal-content">
+        <div class="edit-modal-header">
+            <h2>Upload Document</h2>
+
+            <button
+                    type="button"
+                    class="edit-close"
+                    onclick="closeUploadModal()"
+                    title="Close">
+                ×
+            </button>
+        </div>
+
+        <input type="hidden" id="uploadContractId">
+
+        <div class="form-group">
+            <label>Select Document</label>
+            <input
+                    type="file"
+                    id="documentFile"
+                    accept=".pdf,.doc,.docx,.txt">
+        </div>
+
+        <div class="modal-buttons">
+            <button
+                    type="button"
+                    class="cancel-btn"
+                    onclick="closeUploadModal()">
+                Cancel
+            </button>
+
+            <button
+                    type="button"
+                    class="save-btn"
+                    onclick="uploadDocument()">
+                Upload Document
+            </button>
+        </div>
+    </div>
+</div>
+
+<!-- ================= DOCUMENTS LIST MODAL ================= -->
+
+<div class="modal" id="documentsModal">
+
+    <div class="modal-content">
+
+        <div class="edit-modal-header">
+
+            <h2>
+                Contract Documents
+            </h2>
+
+            <button
+                    type="button"
+                    class="edit-close"
+                    onclick="closeDocumentsModal()"
+                    title="Close">
+
+                ×
+
+            </button>
+
+        </div>
+
+
+        <div style="padding: 24px;">
+
+            <div
+                    id="documentsList"
+                    style="
+                        display: flex;
+                        flex-direction: column;
+                        gap: 12px;
+                    ">
+
+            </div>
+
+        </div>
+
+
+        <div class="modal-buttons">
+
+            <button
+                    type="button"
+                    class="cancel-btn"
+                    onclick="closeDocumentsModal()">
+
+                Close
+
+            </button>
+
+        </div>
+
+    </div>
+
+</div>
+
+<!-- ================= CLAUSES LIST MODAL ================= -->
+
+<div class="modal" id="clausesModal">
+
+    <div class="modal-content">
+
+        <div class="edit-modal-header">
+
+            <h2>
+                Contract Clauses
+            </h2>
+
+            <button
+                    type="button"
+                    class="edit-close"
+                    onclick="closeClausesModal()"
+                    title="Close">
+
+                ×
+
+            </button>
+
+        </div>
+
+        <div style="
+            display:flex;
+            justify-content:flex-end;
+            padding:18px 24px 0;
+        ">
+
+                    <button
+                            type="button"
+                            class="add-btn"
+                            onclick="openClauseCreateModal()">
+
+                        + Add Clause
+
+                    </button>
+
+                </div>
+
+
+        <div style="padding:24px;">
+
+            <div
+                    id="clausesList"
+                    style="
+                        display:flex;
+                        flex-direction:column;
+                        gap:12px;
+                    ">
+
+            </div>
+
+        </div>
+
+
+        <div class="modal-buttons">
+
+            <button
+                    type="button"
+                    class="cancel-btn"
+                    onclick="closeClausesModal()">
+
+                Close
+
+            </button>
+
+        </div>
+
+    </div>
+
+</div>
+
+<!-- ================= CLAUSE CREATE MODAL ================= -->
+
+<div class="modal" id="clauseCreateModal">
+
+    <div class="modal-content">
+
+        <div class="edit-modal-header">
+
+            <h2>
+                Add Clause
+            </h2>
+
+            <button
+                    type="button"
+                    class="edit-close"
+                    onclick="closeClauseCreateModal()"
+                    title="Close">
+
+                ×
+
+            </button>
+
+        </div>
+
+
+        <input
+                type="hidden"
+                id="clauseContractId">
+
+
+        <div class="form-group">
+
+            <label>
+                Clause Number
+            </label>
+
+            <input
+                    type="text"
+                    id="clauseNumber"
+                    placeholder="Example: 1.2">
+
+        </div>
+
+
+        <div class="form-group">
+
+            <label>
+                Clause Title
+            </label>
+
+            <input
+                    type="text"
+                    id="clauseTitle"
+                    placeholder="Enter clause title">
+
+        </div>
+
+
+        <div class="form-group">
+
+            <label>
+                Clause Content
+            </label>
+
+            <textarea
+                    id="clauseContent"
+                    placeholder="Enter clause content"></textarea>
+
+        </div>
+
+
+        <div class="modal-buttons">
+
+            <button
+                    type="button"
+                    class="cancel-btn"
+                    onclick="closeClauseCreateModal()">
+
+                Cancel
+
+            </button>
+
+
+            <button
+                    type="button"
+                    class="save-btn"
+                    onclick="saveClause()">
+
+                Save Clause
+
+            </button>
+
+        </div>
+
+    </div>
+
+</div>
+
+</body>
+
+</html>
