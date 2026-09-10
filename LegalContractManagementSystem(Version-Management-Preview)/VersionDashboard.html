@@ -1,0 +1,464 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Version History | Legal Contract Management</title>
+
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: Arial, sans-serif;
+        }
+
+        body {
+            background: #f4f7fb;
+            color: #1f2937;
+        }
+
+        .navbar {
+            height: 75px;
+            background: linear-gradient(135deg, #1e3a8a, #2563eb);
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0 35px;
+            color: white;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.15);
+        }
+
+        .brand {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .brand-icon {
+            width: 45px;
+            height: 45px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: rgba(255,255,255,0.15);
+            border-radius: 12px;
+            font-size: 24px;
+        }
+
+        .brand h2 {
+            font-size: 20px;
+            font-weight: 600;
+        }
+
+        .profile-section {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+        }
+
+        .profile-info {
+            text-align: right;
+        }
+
+        .profile-info h4 {
+            font-size: 15px;
+        }
+
+        .profile-info p {
+            font-size: 12px;
+            opacity: 0.8;
+            margin-top: 3px;
+        }
+
+        .logout-btn {
+            background: #ef4444;
+            border: none;
+            color: white;
+            padding: 11px 18px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 14px;
+            font-weight: 600;
+        }
+
+        .layout {
+            display: flex;
+            min-height: calc(100vh - 75px);
+        }
+
+        .sidebar {
+            width: 250px;
+            background: linear-gradient(180deg, #172033, #111827);
+            padding: 25px 15px;
+            flex-shrink: 0;
+        }
+
+        .menu-title {
+            color: #94a3b8;
+            font-size: 11px;
+            font-weight: bold;
+            letter-spacing: 1px;
+            margin: 10px 15px 15px;
+        }
+
+        .sidebar a {
+            display: flex;
+            align-items: center;
+            gap: 14px;
+            text-decoration: none;
+            color: #cbd5e1;
+            padding: 14px 15px;
+            border-radius: 10px;
+            margin-bottom: 8px;
+            font-size: 15px;
+        }
+
+        .sidebar a:hover,
+        .sidebar a.active {
+            background: linear-gradient(135deg, #2563eb, #1d4ed8);
+            color: white;
+        }
+
+        .content {
+            flex: 1;
+            padding: 40px;
+        }
+
+        .page-header {
+            margin-bottom: 30px;
+        }
+
+        .page-header h1 {
+            font-size: 30px;
+            color: #172033;
+            margin-bottom: 8px;
+        }
+
+        .page-header p {
+            color: #64748b;
+            font-size: 15px;
+        }
+
+        .table-card {
+            background: white;
+            border-radius: 16px;
+            box-shadow: 0 8px 25px rgba(0,0,0,0.06);
+            overflow: hidden;
+        }
+
+        .table-header {
+            padding: 22px;
+            border-bottom: 1px solid #e2e8f0;
+        }
+
+        .table-header h2 {
+            font-size: 19px;
+            color: #172033;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        th {
+            background: #f8fafc;
+            color: #475569;
+            font-size: 13px;
+            text-align: left;
+            padding: 15px 18px;
+            border-bottom: 1px solid #e2e8f0;
+        }
+
+        td {
+            padding: 15px 18px;
+            border-bottom: 1px solid #f1f5f9;
+            font-size: 14px;
+        }
+
+        tr:hover {
+            background: #f8fafc;
+        }
+
+        .status {
+            display: inline-block;
+            padding: 6px 11px;
+            border-radius: 20px;
+            font-size: 11px;
+            font-weight: 600;
+        }
+
+        .status-ACTIVE {
+            background: #dcfce7;
+            color: #15803d;
+        }
+
+        .status-DRAFT {
+            background: #fef3c7;
+            color: #b45309;
+        }
+    </style>
+</head>
+
+<body>
+
+<div class="navbar">
+
+    <div class="brand">
+        <div class="brand-icon">⚖️</div>
+
+        <h2>
+            Legal Contract Management
+        </h2>
+    </div>
+
+    <div class="profile-section">
+
+        <div class="profile-info">
+            <h4 id="topUsername">User</h4>
+            <p id="topRole">USER</p>
+        </div>
+
+        <button
+                class="logout-btn"
+                onclick="logout()">
+
+            Logout
+
+        </button>
+
+    </div>
+
+</div>
+
+
+<div class="layout">
+
+    <div class="sidebar">
+
+        <div class="menu-title">
+            VERSION MENU
+        </div>
+
+        <a href="/Dashboard.html">
+
+            <span>🏠</span>
+
+            <span>
+                Dashboard
+            </span>
+
+        </a>
+
+        <a href="/VersionDashboard.html"
+           class="active">
+
+            <span>🔄</span>
+
+            <span>
+                Version History
+            </span>
+
+        </a>
+
+    </div>
+
+
+    <div class="content">
+
+        <div class="page-header">
+
+            <h1>
+                Version History
+            </h1>
+
+            <p>
+                View current and previous versions of legal contracts.
+            </p>
+
+        </div>
+
+
+        <div class="table-card">
+
+            <div class="table-header">
+
+                <h2>
+                    Contract Versions
+                </h2>
+
+            </div>
+
+
+            <table>
+
+                <thead>
+
+                <tr>
+
+                    <th>ID</th>
+                    <th>Version</th>
+                    <th>Contract ID</th>
+                    <th>Status</th>
+                    <th>Change Summary</th>
+                    <th>Created By</th>
+                    <th>Created At</th>
+
+                </tr>
+
+                </thead>
+
+                <tbody id="versionTableBody">
+
+                </tbody>
+
+            </table>
+
+        </div>
+
+    </div>
+
+</div>
+
+<script>
+
+    document.addEventListener(
+        "DOMContentLoaded",
+        function () {
+
+            const username =
+                localStorage.getItem("username");
+
+            const role =
+                localStorage.getItem("role");
+
+            document.getElementById(
+                "topUsername"
+            ).textContent =
+                username || "User";
+
+            document.getElementById(
+                "topRole"
+            ).textContent =
+                role || "USER";
+
+            loadVersions();
+
+        }
+    );
+
+
+    async function loadVersions() {
+
+        try {
+
+            const response =
+                await fetch("/api/versions");
+
+            if (!response.ok) {
+
+                throw new Error(
+                    "Failed to load versions"
+                );
+
+            }
+
+            const versions =
+                await response.json();
+
+            const tbody =
+                document.getElementById(
+                    "versionTableBody"
+                );
+
+            tbody.innerHTML = "";
+
+            versions.forEach(
+                version => {
+
+                    const status =
+                        String(
+                            version.status || ""
+                        ).toUpperCase();
+
+                    const row =
+                        document.createElement("tr");
+
+                    row.innerHTML = `
+
+                        <td>
+                            ${version.id}
+                        </td>
+
+                        <td>
+                            <strong>
+                                Version ${version.versionNumber}
+                            </strong>
+                        </td>
+
+                        <td>
+                            Contract #${version.contract?.id || "-"}
+                        </td>
+
+                        <td>
+
+                            <span
+                                class="status status-${status}">
+
+                                ${status}
+
+                            </span>
+
+                        </td>
+
+                        <td>
+                            ${version.changeSummary || "-"}
+                        </td>
+
+                        <td>
+                            ${version.createdBy?.username || "-"}
+                        </td>
+
+                        <td>
+                            ${version.createdAt || "-"}
+                        </td>
+
+                    `;
+
+                    tbody.appendChild(row);
+
+                }
+            );
+
+        }
+        catch (error) {
+
+            console.error(
+                "Version loading error:",
+                error
+            );
+
+        }
+
+    }
+
+
+    function logout() {
+
+        localStorage.removeItem("username");
+        localStorage.removeItem("role");
+
+        sessionStorage.clear();
+
+        window.location.replace(
+            "/Login.html"
+        );
+
+    }
+
+</script>
+
+</body>
+</html>
