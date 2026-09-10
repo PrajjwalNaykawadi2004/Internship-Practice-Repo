@@ -1,0 +1,1805 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Approval Dashboard - Legal Contract Management</title>
+
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: Arial, sans-serif;
+        }
+
+        body {
+            background: #f4f6f9;
+            color: #333;
+        }
+
+        .navbar {
+            height: 60px;
+            background: #1f2937;
+            color: white;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0 25px;
+        }
+
+        .navbar h2 {
+            font-size: 20px;
+        }
+
+        .user-info {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .logout-btn {
+            background: #dc3545;
+            border: none;
+            color: white;
+            padding: 8px 14px;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+        .layout {
+            display: flex;
+            min-height: calc(100vh - 60px);
+        }
+
+        .sidebar {
+            width: 220px;
+            background: #111827;
+            padding-top: 20px;
+        }
+
+        .sidebar a {
+            display: block;
+            color: #d1d5db;
+            text-decoration: none;
+            padding: 14px 20px;
+        }
+
+        .sidebar a:hover,
+        .sidebar a.active {
+            background: #374151;
+            color: white;
+        }
+
+        .main {
+            flex: 1;
+            padding: 25px;
+        }
+
+        .page-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 25px;
+        }
+
+        .page-header h1 {
+            font-size: 26px;
+        }
+
+        .add-btn {
+            background: #2563eb;
+            color: white;
+            border: none;
+            padding: 10px 16px;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+        .stats {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 18px;
+            margin-bottom: 25px;
+        }
+
+        .stat-card {
+            background: white;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 2px 6px rgba(0,0,0,0.08);
+        }
+
+        .stat-card h3 {
+            font-size: 14px;
+            color: #6b7280;
+            margin-bottom: 10px;
+        }
+
+        .stat-card p {
+            font-size: 28px;
+            font-weight: bold;
+        }
+
+        .table-container {
+            background: white;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 2px 6px rgba(0,0,0,0.08);
+            overflow-x: auto;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        th, td {
+            padding: 12px;
+            border-bottom: 1px solid #e5e7eb;
+            text-align: left;
+            vertical-align: middle;
+        }
+
+        th {
+            background: #f9fafb;
+        }
+
+        .status {
+            padding: 5px 9px;
+            border-radius: 15px;
+            font-size: 12px;
+            font-weight: bold;
+        }
+
+        .pending {
+            background: #fff3cd;
+            color: #856404;
+        }
+
+        .approved {
+            background: #d1fae5;
+            color: #065f46;
+        }
+
+        .rejected {
+            background: #fee2e2;
+            color: #991b1b;
+        }
+
+        .action-btn {
+            border: none;
+            padding: 6px 10px;
+            border-radius: 4px;
+            cursor: pointer;
+            margin-right: 5px;
+            white-space: nowrap;
+        }
+
+        .view-btn {
+            background: #dff1ff;
+            color: #0d6efd;
+        }
+
+        .view-btn:hover {
+            background: #c8e7ff;
+        }
+
+        .edit-btn {
+            background: #fff1c7;
+            color: #9a6700;
+        }
+
+        .edit-btn:hover {
+            background: #ffe7a3;
+        }
+
+        .delete-btn {
+            background: #ffdede;
+            color: #dc3545;
+        }
+
+        .delete-btn:hover {
+            background: #ffcaca;
+        }
+
+        td:last-child {
+            white-space: nowrap;
+        }
+
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 1000;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.5);
+            align-items: center;
+            justify-content: center;
+        }
+        #approvalModal .modal-content {
+            background: white;
+            width: 560px;
+            max-width: 92%;
+            max-height: 90vh;
+            overflow-y: auto;
+            padding: 0;
+            border-radius: 14px;
+            box-shadow: 0 20px 50px rgba(0,0,0,0.2);
+        }
+
+        max-width: 92%;
+        max-height: 90vh;
+        overflow-y: auto;
+        padding: 0;
+    }
+
+        .modal-header {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 20px;
+        }
+
+        .close {
+            font-size: 25px;
+            cursor: pointer;
+        }
+
+        .form-group {
+            margin-bottom: 15px;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 6px;
+            font-weight: bold;
+        }
+
+        .form-group input,
+        .form-group select,
+        .form-group textarea {
+            width: 100%;
+            padding: 9px;
+            border: 1px solid #d1d5db;
+            border-radius: 5px;
+        }
+
+        .form-group textarea {
+            min-height: 90px;
+            resize: vertical;
+        }
+
+        .save-btn {
+            background: #2563eb;
+            color: white;
+            border: none;
+            padding: 10px 18px;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+        .cancel-btn {
+            background: #6b7280;
+            color: white;
+            border: none;
+            padding: 10px 18px;
+            border-radius: 5px;
+            cursor: pointer;
+            margin-left: 8px;
+        }
+
+        /* =========================
+           PROFESSIONAL APPROVAL VIEW
+        ========================= */
+
+        #viewApprovalModal .modal-content {
+            width: 680px;
+            max-width: 92%;
+            max-height: 90vh;
+            padding: 0;
+            background: white;
+            overflow-y: auto;
+            overflow-x: hidden;
+        }
+
+        #viewApprovalModal .view-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 20px 24px;
+            background: linear-gradient(135deg, #1e3a8a, #2563eb);
+            color: white;
+        }
+
+        #viewApprovalModal .view-header h2 {
+            margin: 0;
+            color: white;
+            font-size: 20px;
+        }
+
+        .view-close {
+            width: 32px;
+            height: 32px;
+            border: none;
+            border-radius: 50%;
+            background: rgba(255,255,255,0.15);
+            color: white;
+            font-size: 22px;
+            line-height: 1;
+            cursor: pointer;
+            transition: 0.2s;
+        }
+
+        .view-close:hover {
+            background: rgba(255,255,255,0.28);
+        }
+
+        .approval-view-body {
+            padding: 24px;
+        }
+
+        .approval-details-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 16px;
+        }
+
+        .approval-detail-item {
+            background: #f8fafc;
+            border: 1px solid #e2e8f0;
+            border-radius: 10px;
+            padding: 14px 16px;
+        }
+
+        .approval-detail-label {
+            display: block;
+            color: #64748b;
+            font-size: 12px;
+            font-weight: 600;
+            margin-bottom: 6px;
+            text-transform: uppercase;
+            letter-spacing: 0.4px;
+        }
+
+        .approval-detail-value {
+            color: #172033;
+            font-size: 14px;
+            font-weight: 500;
+            word-break: break-word;
+        }
+
+        .approval-full-width {
+            grid-column: 1 / -1;
+            width: 100%;
+            text-align: left !important;
+        }
+
+        .approval-comments-box {
+        width: 100%;
+        background: white;
+        border: 1px solid #e2e8f0;
+        border-radius: 8px;
+        padding: 14px;
+        line-height: 1.6;
+        color: #334155;
+        max-height: 160px;
+        overflow-y: auto;
+        white-space: pre-wrap;
+        word-break: break-word;
+        text-align: left !important;
+        vertical-align: top !important;
+        display: block;
+        }
+
+        .approval-view-status {
+            display: inline-block;
+            padding: 5px 11px;
+            border-radius: 20px;
+            font-size: 11px;
+            font-weight: 700;
+        }
+
+        #viewApprovalModal .modal-buttons {
+            padding: 0 24px 22px;
+            margin-top: 0;
+        }
+
+        #viewApprovalModal .cancel-btn {
+            padding: 10px 22px;
+            font-weight: 600;
+        }
+
+        @media(max-width: 600px) {
+            .approval-details-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .approval-full-width {
+                grid-column: auto;
+            }
+        }
+
+        .empty-message {
+            text-align: center;
+            padding: 30px;
+            color: #6b7280;
+        }
+
+        @media (max-width: 900px) {
+            .stats {
+                grid-template-columns: repeat(2, 1fr);
+            }
+
+            .sidebar {
+                width: 180px;
+            }
+        }
+
+        @media (max-width: 600px) {
+            .stats {
+                grid-template-columns: 1fr;
+            }
+
+            .sidebar {
+                display: none;
+            }
+        }
+
+        /* Approval Comments */
+        #viewApprovalModal .approval-comments-box {
+            display: block !important;
+            width: 100% !important;
+            text-align: left !important;
+            vertical-align: top !important;
+            padding: 14px !important;
+            line-height: 1.6;
+            white-space: pre-wrap;
+            word-break: break-word;
+            overflow-y: auto !important;
+        }
+
+        .table-toolbar {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 20px;
+    }
+
+    .table-toolbar h2 {
+        color: #111827;
+        font-size: 20px;
+    }
+
+    #searchApprovals {
+        width: 270px;
+        padding: 10px 14px;
+        border: 1px solid #cbd5e1;
+        border-radius: 8px;
+        outline: none;
+        font-size: 14px;
+    }
+
+    #searchApprovals:focus {
+        border-color: #2563eb;
+    }
+
+    @media (max-width: 600px) {
+        .table-toolbar {
+            flex-direction: column;
+            align-items: stretch;
+            gap: 12px;
+        }
+
+        #searchApprovals {
+            width: 100%;
+        }
+    }
+
+     .edit-modal-header {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        padding: 20px 24px;
+        background: linear-gradient(135deg, #1e3a8a, #2563eb);
+        color: white;
+    }
+
+    .edit-modal-header h2 {
+        margin: 0;
+        color: white;
+        font-size: 20px;
+    }
+
+    .edit-close {
+        width: 32px;
+        height: 32px;
+        border: none;
+        border-radius: 50%;
+        background: rgba(255,255,255,0.15);
+        color: white;
+        font-size: 22px;
+        line-height: 1;
+        cursor: pointer;
+        transition: 0.2s;
+    }
+
+    .edit-close:hover {
+        background: rgba(255,255,255,0.28);
+    }
+
+     #approvalModal .form-group {
+    padding: 0 24px;
+    margin-bottom: 18px;
+    }
+
+    #approvalModal .form-group:first-of-type {
+        margin-top: 24px;
+    }
+
+    #approvalModal .form-group label {
+        display: block;
+        margin-bottom: 8px;
+        font-size: 14px;
+        color: #475569;
+        font-weight: 700;
+    }
+
+    #approvalModal .form-group input,
+    #approvalModal .form-group select,
+    #approvalModal .form-group textarea {
+        width: 100%;
+        box-sizing: border-box;
+        padding: 11px 13px;
+        font-size: 15px;
+        color: #334155;
+        background: #ffffff;
+        border: 1px solid #cbd5e1;
+        border-radius: 8px;
+        transition: 0.2s;
+    }
+
+    #approvalModal .form-group input:focus,
+    #approvalModal .form-group select:focus,
+    #approvalModal .form-group textarea:focus {
+        outline: none;
+        border-color: #2563eb;
+        box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.10);
+    }
+
+    #approvalModal textarea {
+        min-height: 145px;
+        resize: vertical;
+        line-height: 1.6;
+        padding: 13px;
+    }
+
+     #approvalModal .approval-modal-footer {
+    display: flex;
+    justify-content: flex-end;
+    gap: 10px;
+    padding: 8px 24px 24px;
+    }
+
+    #approvalModal .cancel-btn,
+    #approvalModal .save-btn {
+        min-width: 90px;
+        padding: 10px 18px;
+        border-radius: 8px;
+        font-weight: 600;
+        cursor: pointer;
+        transition: 0.2s;
+    }
+
+    #approvalModal .cancel-btn {
+        background: #f1f5f9;
+        color: #475569;
+        border: 1px solid #cbd5e1;
+    }
+
+    #approvalModal .cancel-btn:hover {
+        background: #e2e8f0;
+    }
+
+    #approvalModal .save-btn {
+        background: #2563eb;
+        color: white;
+        border: none;
+    }
+
+    #approvalModal .save-btn:hover {
+        background: #1d4ed8;
+    }
+
+/* =========================
+   APPROVAL EDIT - FINAL POLISH
+========================= */
+
+#approvalModal .form-group textarea {
+    resize: none;
+}
+
+#approvalModal .form-group input,
+#approvalModal .form-group select,
+#approvalModal .form-group textarea {
+    border-radius: 10px;
+    border: 1px solid #dbe3ee;
+    background: #f8fafc;
+    box-shadow: none;
+}
+
+#approvalModal .form-group input:focus,
+#approvalModal .form-group select:focus,
+#approvalModal .form-group textarea:focus {
+    background: #ffffff;
+    border-color: #2563eb;
+    box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.10);
+}
+
+/* =========================
+   FINAL PROFESSIONAL EDIT CONTRACT
+========================= */
+
+#contractModal .edit-modal-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+
+    padding: 20px 24px;
+
+    background: linear-gradient(
+        135deg,
+        #1e3a8a,
+        #2563eb
+    );
+
+    color: white;
+}
+
+#contractModal .edit-modal-header h2 {
+    margin: 0;
+    color: white;
+    font-size: 20px;
+    font-weight: 600;
+}
+
+/* Close button */
+#contractModal .edit-close {
+    width: 32px;
+    height: 32px;
+
+    border: none;
+    border-radius: 50%;
+
+    background: rgba(255,255,255,0.15);
+    color: white;
+
+    font-size: 22px;
+    line-height: 1;
+
+    cursor: pointer;
+
+    transition: 0.2s;
+}
+
+#contractModal .edit-close:hover {
+    background: rgba(255,255,255,0.28);
+}
+
+/* Professional inner boxes */
+#contractModal .form-group {
+    margin: 0 24px 16px;
+    padding: 14px 16px 16px;
+
+    background: #f8fafc;
+    border: 1px solid #e2e8f0;
+    border-radius: 10px;
+}
+
+#contractModal .form-group:first-of-type {
+    margin-top: 24px;
+}
+
+#contractModal .form-group label {
+    display: block;
+
+    margin-bottom: 8px;
+
+    color: #64748b;
+    font-size: 12px;
+    font-weight: 700;
+
+    text-transform: uppercase;
+    letter-spacing: 0.4px;
+}
+
+#contractModal .form-group input,
+#contractModal .form-group textarea,
+#contractModal .form-group select {
+    width: 100%;
+    box-sizing: border-box;
+
+    background: white;
+
+    border: 1px solid #dbe3ee;
+    border-radius: 8px;
+
+    padding: 11px 13px;
+
+    color: #334155;
+    font-size: 14px;
+
+    outline: none;
+
+    transition: all 0.2s ease;
+}
+
+#contractModal .form-group input,
+#contractModal .form-group select {
+    height: 44px;
+}
+
+/* Description box */
+#contractModal .form-group textarea {
+    min-height: 125px;
+
+    resize: none;
+
+    line-height: 1.6;
+}
+
+/* Focus */
+#contractModal .form-group input:focus,
+#contractModal .form-group textarea:focus,
+#contractModal .form-group select:focus {
+    border-color: #2563eb;
+
+    box-shadow:
+        0 0 0 3px rgba(37,99,235,0.10);
+}
+
+/* Footer */
+#contractModal .modal-buttons {
+    display: flex;
+    justify-content: flex-end;
+    gap: 10px;
+
+    padding: 8px 24px 24px;
+    margin-top: 4px;
+
+    border-top: 1px solid #f1f5f9;
+}
+
+/* Buttons */
+#contractModal .cancel-btn,
+#contractModal .save-btn {
+    min-width: 90px;
+
+    padding: 10px 18px;
+
+    border-radius: 8px;
+
+    font-weight: 600;
+
+    cursor: pointer;
+
+    transition: 0.2s;
+}
+
+#contractModal .cancel-btn {
+    background: #f1f5f9;
+    color: #475569;
+
+    border: 1px solid #cbd5e1;
+}
+
+#contractModal .cancel-btn:hover {
+    background: #e2e8f0;
+}
+
+#contractModal .save-btn {
+    background: #2563eb;
+    color: white;
+
+    border: none;
+}
+
+#contractModal .save-btn:hover {
+    background: #1d4ed8;
+}
+
+/* =========================
+   APPROVAL EDIT TOP SPACING
+========================= */
+
+#approvalModal .edit-modal-header + input + .form-group {
+    margin-top: 24px;
+}
+
+    </style>
+</head>
+
+<body>
+
+<div class="navbar">
+    <h2>Legal Contract Management</h2>
+
+    <div class="user-info">
+        <span id="currentUser"></span>
+        <button class="logout-btn" onclick="logout()">Logout</button>
+    </div>
+</div>
+
+<div class="layout">
+
+    <div class="sidebar">
+
+        <a href="/Dashboard.html">
+            Dashboard
+        </a>
+
+        <a href="/ApprovalDashboard.html" class="active">
+            Approvals
+        </a>
+
+    </div>
+
+    <div class="main">
+
+        <div class="page-header">
+            <h1>Approval Dashboard</h1>
+            <button class="add-btn" onclick="openCreateModal()">
+                + Request Approval
+            </button>
+        </div>
+
+        <div class="stats">
+
+            <div class="stat-card">
+                <h3>Total Approvals</h3>
+                <p id="totalApprovals">0</p>
+            </div>
+
+            <div class="stat-card">
+                <h3>Pending</h3>
+                <p id="pendingApprovals">0</p>
+            </div>
+
+            <div class="stat-card">
+                <h3>Approved</h3>
+                <p id="approvedApprovals">0</p>
+            </div>
+
+            <div class="stat-card">
+                <h3>Rejected</h3>
+                <p id="rejectedApprovals">0</p>
+            </div>
+
+        </div>
+
+        <div class="table-container">
+
+            <div class="table-toolbar">
+                <h2>All Approvals</h2>
+
+                <input
+                        type="text"
+                        id="searchApprovals"
+                        placeholder="Search approvals..."
+                        oninput="searchApprovals()"
+                >
+            </div>
+
+            <table>
+
+                <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>Contract</th>
+                    <th>Version</th>
+                    <th>Status</th>
+                    <th>Comments</th>
+                    <th>Reviewed By</th>
+                    <th>Requested Date</th>
+                    <th>Reviewed Date</th>
+                    <th>Actions</th>
+                </tr>
+                </thead>
+
+                <tbody id="approvalTableBody">
+                </tbody>
+
+            </table>
+
+            <div id="emptyMessage" class="empty-message" style="display:none;">
+                No approvals found.
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+
+
+<!-- Approval Modal -->
+
+<div class="modal" id="approvalModal">
+
+    <div class="modal-content">
+
+        <div class="edit-modal-header">
+
+            <h2 id="modalTitle">Request Approval</h2>
+
+            <button type="button"
+                    class="edit-close"
+                    onclick="closeModal()"
+                    title="Close">
+                ×
+            </button>
+
+        </div>
+
+        <input type="hidden" id="approvalId">
+
+        <div class="form-group">
+            <label>Contract ID</label>
+            <input type="number" id="contractId" placeholder="Enter Contract ID">
+        </div>
+
+        <div class="form-group">
+            <label>Version ID</label>
+            <input type="number" id="versionId" placeholder="Enter Version ID">
+        </div>
+
+        <div class="form-group">
+            <label>Status</label>
+
+            <select id="status">
+                <option value="PENDING">Pending</option>
+                <option value="APPROVED">Approved</option>
+                <option value="REJECTED">Rejected</option>
+            </select>
+        </div>
+
+        <div class="form-group">
+            <label>Comments / Rejection Reason</label>
+            <textarea id="ApprovalComments"
+                      placeholder="Enter comments"></textarea>
+        </div>
+
+        <div class="form-group">
+            <label>Reviewed By</label>
+            <input type="text"
+                   id="reviewedBy"
+                   placeholder="Username"
+                   readonly>
+        </div>
+
+        <div class="approval-modal-footer">
+            <button class="cancel-btn" onclick="closeModal()">Cancel</button>
+            <button class="save-btn" onclick="saveApproval()">Save</button>
+        </div>
+
+    </div>
+
+</div>
+
+<!-- ================= PROFESSIONAL VIEW MODAL ================= -->
+
+<div class="modal" id="viewApprovalModal">
+
+    <div class="modal-content">
+
+        <div class="view-header">
+            <h2>Approval Details</h2>
+
+            <button
+                    class="view-close"
+                    onclick="closeApprovalViewModal()"
+                    title="Close">
+                ×
+            </button>
+        </div>
+
+        <div class="approval-view-body">
+
+            <div
+                    class="approval-details-grid"
+                    id="approvalDetails">
+            </div>
+
+        </div>
+
+        <div class="modal-buttons">
+
+            <button
+                    class="cancel-btn"
+                    onclick="closeApprovalViewModal()">
+                Close
+            </button>
+
+        </div>
+
+    </div>
+
+</div>
+
+
+<script>
+
+    document.addEventListener("DOMContentLoaded", function () {
+    const username = localStorage.getItem("username");
+    const role = localStorage.getItem("role");
+    const justLoggedIn = sessionStorage.getItem("justLoggedIn");
+
+
+    if (!username || justLoggedIn !== "true") {
+
+        sessionStorage.setItem(
+            "redirectAfterLogin",
+            "/ApprovalDashboard.html"
+        );
+
+        window.location.replace("/Login.html");
+        return;
+    }
+
+    sessionStorage.removeItem("justLoggedIn");
+
+    document.getElementById("currentUser").textContent =
+        username + " (" + role + ")";
+
+    // Load approvals
+
+    function loadApprovals() {
+
+          fetch(
+                "/api/approvals?username=" +
+                encodeURIComponent(username)
+            )
+            .then(response => {
+
+                if (!response.ok) {
+                    throw new Error("Failed to load approvals");
+                }
+
+                return response.json();
+            })
+            .then(data => {
+
+                console.log("APPROVAL DATA =", data);
+
+                displayApprovals(data);
+                updateStats(data);
+
+            })
+            .catch(error => {
+
+                console.error(error);
+
+                alert("Failed to load approvals.");
+
+            });
+    }
+
+
+    // Display approvals
+
+    function displayApprovals(approvals) {
+
+        // approvals = approvals.filter(approval => approval.modification != null);
+
+        const tbody =
+            document.getElementById("approvalTableBody");
+
+        const emptyMessage =
+            document.getElementById("emptyMessage");
+
+        tbody.innerHTML = "";
+
+        if (!approvals || approvals.length === 0) {
+
+            emptyMessage.style.display = "block";
+
+            return;
+        }
+
+        emptyMessage.style.display = "none";
+
+
+        approvals.forEach(approval => {
+
+            const row = document.createElement("tr");
+
+            const status =
+                approval.status || "PENDING";
+
+            let statusClass = "pending";
+
+            if (status === "APPROVED") {
+                statusClass = "approved";
+            }
+
+            if (status === "REJECTED") {
+                statusClass = "rejected";
+            }
+
+
+            const contractId =
+                approval.contract?.id ?? "-";
+
+            const versionId =
+                approval.version?.id ?? "-";
+
+            const reviewedBy =
+                approval.reviewedBy?.username ?? "-";
+
+
+            row.innerHTML = `
+
+                <td>${approval.id}</td>
+
+                <td>Contract #${contractId}</td>
+
+                <td>Version #${versionId}</td>
+
+                <td>
+                    <span class="status ${statusClass}">
+                        ${status}
+                    </span>
+                </td>
+
+                <td>${escapeHtml(approval.comments || "-")}</td>
+
+                <td>${escapeHtml(reviewedBy)}</td>
+
+                <td>${formatDate(approval.requestedAt)}</td>
+
+                <td>${formatDate(approval.reviewedAt)}</td>
+
+                <td>
+
+                    <button
+                        class="action-btn view-btn"
+                        onclick="viewApproval(${approval.id})">
+                        View
+                    </button>
+
+                    ${
+                        role.trim().toUpperCase() === "CONTRACTMANAGER"
+                        ? `
+                            <button
+                                class="action-btn edit-btn"
+                                onclick="editApproval(${approval.id})">
+                                Review
+                            </button>
+
+                            <button
+                                class="action-btn delete-btn"
+                                onclick="deleteApproval(${approval.id})">
+                                Delete
+                            </button>
+                          `
+                        : ""
+                    }
+
+                </td>
+            `;
+
+            tbody.appendChild(row);
+
+        });
+
+    }
+
+    function searchApprovals() {
+
+    const searchText =
+        document.getElementById("searchApprovals")
+            .value
+            .toLowerCase()
+            .trim();
+
+    const rows =
+        document.querySelectorAll("#approvalTableBody tr");
+
+    rows.forEach(row => {
+
+        const rowText =
+            row.textContent.toLowerCase();
+
+        row.style.display =
+            rowText.includes(searchText)
+                ? ""
+                : "none";
+    });
+}
+
+
+    // Statistics
+
+    function updateStats(approvals) {
+
+        const total = approvals.length;
+
+        const pending =
+            approvals.filter(a => a.status === "PENDING").length;
+
+        const approved =
+            approvals.filter(a => a.status === "APPROVED").length;
+
+        const rejected =
+            approvals.filter(a => a.status === "REJECTED").length;
+
+
+        document.getElementById("totalApprovals").textContent =
+            total;
+
+        document.getElementById("pendingApprovals").textContent =
+            pending;
+
+        document.getElementById("approvedApprovals").textContent =
+            approved;
+
+        document.getElementById("rejectedApprovals").textContent =
+            rejected;
+    }
+
+
+    // Open Create Modal
+
+    function openCreateModal() {
+
+        document.getElementById("modalTitle").textContent =
+            "Request Approval";
+
+        document.getElementById("approvalId").value = "";
+
+        document.getElementById("contractId").value = "";
+
+        document.getElementById("versionId").value = "";
+
+        document.getElementById("status").value = "PENDING";
+
+        if (role === "USER") {
+            document.getElementById("status").value = "PENDING";
+            document.getElementById("status").disabled = true;
+        } else {
+            document.getElementById("status").disabled = false;
+        }
+
+        document.getElementById("ApprovalComments").value = "";
+
+        document.getElementById("reviewedBy").value = "";
+
+        document.getElementById("approvalModal").style.display =
+            "flex";
+    }
+
+
+    // Edit / Review Approval
+
+    function editApproval(id) {
+
+        fetch("/api/approvals/" + id)
+
+            .then(response => {
+
+                if (!response.ok) {
+                    throw new Error("Approval not found");
+                }
+
+                return response.json();
+
+            })
+
+            .then(approval => {
+
+                document.getElementById("modalTitle").textContent =
+                    approval.status === "PENDING"
+                        ? "Review Approval"
+                        : "Edit Approval";
+
+                document.getElementById("approvalId").value =
+                    approval.id;
+
+                document.getElementById("contractId").value =
+                    approval.contract?.id || "";
+
+                document.getElementById("versionId").value =
+                    approval.version?.id || "";
+
+                document.getElementById("status").value =
+                    approval.status || "PENDING";
+
+                document.getElementById("ApprovalComments").value =
+                    approval.comments || "";
+
+                document.getElementById("reviewedBy").value =
+                    username;
+
+                document.getElementById("approvalModal").style.display =
+                    "flex";
+
+            })
+
+            .catch(error => {
+
+                console.error(error);
+                alert("Failed to load approval.");
+
+            });
+    }
+
+
+    // Save Approval
+
+    function saveApproval() {
+
+        const id =
+            document.getElementById("approvalId").value;
+
+        const contractId =
+            document.getElementById("contractId").value;
+
+        const versionId =
+            document.getElementById("versionId").value;
+
+        const status =
+            document.getElementById("status").value;
+
+        console.log("SELECTED STATUS =", status);
+
+        const comments =
+            document.getElementById("ApprovalComments").value;
+
+        if (!contractId || !versionId) {
+
+            alert("Please enter Contract ID and Version ID.");
+
+            return;
+        }
+
+
+        const approvalData = {
+
+            status: status,
+
+            comments: comments,
+
+            requestedBy: {
+                username: username
+            },
+
+            contract: {
+                id: Number(contractId)
+            },
+
+            version: {
+                id: Number(versionId)
+            }
+        };
+
+
+        // For update, send reviewedBy
+
+        if (id) {
+
+            approvalData.reviewedBy = {
+                username: username
+            };
+
+        }
+
+
+        const url =
+            id
+                ? "/api/approvals/" + id
+                : "/api/approvals";
+
+        const method =
+            id ? "PUT" : "POST";
+
+
+        fetch(url, {
+
+            method: method,
+
+            headers: {
+                "Content-Type": "application/json"
+            },
+
+            body: JSON.stringify(approvalData)
+
+        })
+
+        .then(response => {
+
+            if (!response.ok) {
+                return response.text().then(text => {
+                    throw new Error(text);
+                });
+            }
+
+            return response.json();
+
+        })
+
+        .then(() => {
+
+            alert(
+                id
+                    ? "Approval updated successfully!"
+                    : "Approval request created successfully!"
+            );
+
+            closeModal();
+
+            loadApprovals();
+
+        })
+
+        .catch(error => {
+
+            console.error(error);
+
+            alert(
+                "Failed to save approval: " +
+                error.message
+            );
+
+        });
+
+    }
+
+
+    async function viewApproval(id) {
+
+    try {
+
+        const response =
+            await fetch(`/api/approvals/${id}`);
+
+        if (!response.ok) {
+
+            alert("Approval not found.");
+            return;
+
+        }
+
+        const approval =
+            await response.json();
+
+        const status =
+            String(approval.status || "").toUpperCase();
+
+        let statusClass = "pending";
+
+        if (status === "APPROVED") {
+            statusClass = "approved";
+        }
+
+        if (status === "REJECTED") {
+            statusClass = "rejected";
+        }
+
+        document.getElementById("approvalDetails").innerHTML = `
+
+            <div class="approval-detail-item">
+
+                <span class="approval-detail-label">
+                    Approval ID
+                </span>
+
+                <span class="approval-detail-value">
+                    #${approval.id ?? "-"}
+                </span>
+
+            </div>
+
+            <div class="approval-detail-item">
+    <span class="approval-detail-label">Modification ID</span>
+    <span class="approval-detail-value">
+        ${approval.modification?.id ?? "-"}
+    </span>
+            </div>
+
+            <div class="approval-detail-item">
+                <span class="approval-detail-label">Original Value</span>
+                <span class="approval-detail-value">
+                    ${escapeHtml(approval.modification?.oldContent || "-")}
+                </span>
+            </div>
+
+            <div class="approval-detail-item">
+                <span class="approval-detail-label">Proposed Value</span>
+                <span class="approval-detail-value">
+                    ${escapeHtml(approval.modification?.newContent || "-")}
+                </span>
+            </div>
+
+            <div class="approval-detail-item">
+                <span class="approval-detail-label">Modification Reason</span>
+                <span class="approval-detail-value">
+                    ${escapeHtml(approval.modification?.reason || "-")}
+                </span>
+            </div>
+
+            <div class="approval-detail-item">
+                <span class="approval-detail-label">Requested By</span>
+                <span class="approval-detail-value">
+                    ${escapeHtml(approval.requestedBy?.username || "-")}
+                </span>
+            </div>
+
+            <div class="approval-detail-item">
+                <span class="approval-detail-label">Request Date</span>
+                <span class="approval-detail-value">
+                    ${approval.requestedAt ? formatDate(approval.requestedAt) : "-"}
+                </span>
+            </div>
+
+            <div class="approval-detail-item">
+                <span class="approval-detail-label">Current Status</span>
+                <span class="approval-view-status ${statusClass}">
+                    ${escapeHtml(
+                        approval.modification?.status ||
+                        approval.status ||
+                        "-"
+                    )}
+                </span>
+            </div>
+
+            <div class="approval-detail-item">
+
+                <span class="approval-detail-label">
+                    Status
+                </span>
+
+                <span class="approval-view-status ${statusClass}">
+                    ${escapeHtml(status || "-")}
+                </span>
+
+            </div>
+
+
+            <div class="approval-detail-item">
+
+                <span class="approval-detail-label">
+                    Contract ID
+                </span>
+
+                <span class="approval-detail-value">
+                    ${approval.contract?.id ?? "-"}
+                </span>
+
+            </div>
+
+
+            <div class="approval-detail-item">
+
+                <span class="approval-detail-label">
+                    Version ID
+                </span>
+
+                <span class="approval-detail-value">
+                    ${approval.version?.id ?? "-"}
+                </span>
+
+            </div>
+
+
+            <div class="approval-detail-item">
+
+                <span class="approval-detail-label">
+                    Requested By
+                </span>
+
+                <span class="approval-detail-value">
+                    ${escapeHtml(
+                        approval.requestedBy?.username || "-"
+                    )}
+                </span>
+
+            </div>
+
+
+            <div class="approval-detail-item">
+
+                <span class="approval-detail-label">
+                    Reviewed By
+                </span>
+
+                <span class="approval-detail-value">
+                    ${escapeHtml(
+                        approval.reviewedBy?.username || "-"
+                    )}
+                </span>
+
+            </div>
+
+
+            <div class="approval-detail-item">
+
+                <span class="approval-detail-label">
+                    Requested At
+                </span>
+
+                <span class="approval-detail-value">
+                    ${
+                        approval.requestedAt
+                        ? formatDate(approval.requestedAt)
+                        : "-"
+                    }
+                </span>
+
+            </div>
+
+
+            <div class="approval-detail-item">
+
+                <span class="approval-detail-label">
+                    Reviewed At
+                </span>
+
+                <span class="approval-detail-value">
+                    ${
+                        approval.reviewedAt
+                        ? formatDate(approval.reviewedAt)
+                        : "-"
+                    }
+                </span>
+
+            </div>
+
+
+            <div class="approval-detail-item approval-full-width">
+
+                <span class="approval-detail-label">
+                    Comments
+                </span>
+
+                <div class="approval-comments-box">${escapeHtml(approval.comments || "-")}</div>
+
+            </div>
+
+        `;
+
+        document.getElementById(
+            "viewApprovalModal"
+        ).style.display = "flex";
+
+
+    } catch (error) {
+
+        console.error(
+            "View approval error:",
+            error
+        );
+
+        alert("Unable to view approval.");
+
+    }
+
+}
+
+    // Delete Approval
+
+    function deleteApproval(id) {
+
+        if (!confirm(
+            "Are you sure you want to delete this approval?"
+        )) {
+            return;
+        }
+
+
+        fetch("/api/approvals/" + id, {
+
+            method: "DELETE"
+
+        })
+
+        .then(response => {
+
+            if (!response.ok) {
+                throw new Error("Failed to delete approval");
+            }
+
+            alert("Approval deleted successfully!");
+
+            loadApprovals();
+
+        })
+
+        .catch(error => {
+
+            console.error(error);
+
+            alert("Failed to delete approval.");
+
+        });
+
+    }
+
+
+    // Close Modal
+
+    function closeModal() {
+
+        document.getElementById("approvalModal").style.display =
+            "none";
+    }
+
+    // Close View Modal
+
+    function closeApprovalViewModal() {
+
+        document.getElementById(
+            "viewApprovalModal"
+        ).style.display = "none";
+
+    }
+
+
+    // Logout
+
+    function logout() {
+
+        localStorage.removeItem("username");
+        localStorage.removeItem("role");
+        localStorage.removeItem("adminPassword");
+
+        window.location.href = "/Login.html";
+    }
+
+
+    // Format date
+
+    function formatDate(date) {
+
+        if (!date) {
+            return "-";
+        }
+
+        return new Date(date).toLocaleString();
+    }
+
+
+    // Escape HTML
+
+    function escapeHtml(value) {
+
+        return String(value)
+            .replace(/&/g, "&amp;")
+            .replace(/</g, "&lt;")
+            .replace(/>/g, "&gt;")
+            .replace(/"/g, "&quot;")
+            .replace(/'/g, "&#039;");
+    }
+
+
+    // Initial load
+
+    window.openCreateModal = openCreateModal;
+    window.editApproval = editApproval;
+    window.saveApproval = saveApproval;
+    window.viewApproval = viewApproval;
+    window.deleteApproval = deleteApproval;
+    window.closeModal = closeModal;
+    window.closeApprovalViewModal =
+    closeApprovalViewModal;
+    window.searchApprovals = searchApprovals;
+    window.logout = logout;
+
+    loadApprovals();
+
+    });
+
+</script>
+
+</body>
+</html>
